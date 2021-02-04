@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html" lang="es-MX" xml:lang="es-MX">
+
+<head>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KNYE7DF2RM"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-KNYE7DF2RM');
+    </script>
+    <!-- End Google Analytics -->
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/contratacionesabiertas/static/bower_components/font-awesome/css/font-awesome.min.css">
+    <!-- Bootstrap core CSS -->
+    <link href="/contratacionesabiertas/static/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/contratacionesabiertas/static/bower_components/bootstrap-select/dist/css/bootstrap-select.css" rel="stylesheet">
+    <link rel='stylesheet' href='/contratacionesabiertas/static/stylesheets/main.css' />
+    <link rel='stylesheet' href='/contratacionesabiertas/static/stylesheets/style_d3bubble.css' />
+    <link rel="stylesheet" type="text/css" href="/contratacionesabiertas/static/bower_components/jqplot/jquery.jqplot.css" />
+    <link rel="stylesheet" href="/contratacionesabiertas/static/stylesheets/dashboard.css">
+    <link rel="import" href="<%= process.env.CDN_URL %>/bower_components/polymer/polymer.html">    
+    <link rel="import" href="/contratacionesabiertas/static/inai-navbar/dgm-navbar.html">
+    <link rel="import" href="/contratacionesabiertas/static/inai-footer/dgm-footer.html">
+    <link rel="stylesheet" type="text/css" href="/contratacionesabiertas/static/bower_components/tooltipster/dist/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="/contratacionesabiertas/static/bower_components/tooltipster-follower/dist/css/tooltipster-follower.min.css" />
+	
+	<style no-shim>        
+        .navbar-default   { background-color: #FFFFFF; border: none; top: 158.5px; }
+
+        p{
+            text-align: justify;
+        }
+        table,th,td{
+            border: 1px solid black;
+        }
+        table{
+            width: 70%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        th,td{
+            padding: 15px 15px 0;
+            text-align: center;
+        }
+        th{
+            color: #FFFFFF;
+            background-color: #4d4d4d;
+        }
+        .th2{
+            padding: 15px 15px 15px;
+            background-color: #e04444;
+        }
+        .th3{
+            padding: 15px 15px 15px;
+            background-color: #8e7cc3;
+        }
+        .td2{
+            padding: 15px 15px 15px;
+            background-color: #f3f3f3;
+        }
+        .td3{
+            padding: 15px 15px 15px;
+            background-color: #f3f3f3;
+        }
+        .menuTopBar{
+            text-align: center;
+            background-color: #00bfa5;
+            position: fixed;
+            z-index: 4;
+            top: 106.5px;
+            max-width: none;
+            width: 100%;
+            padding: 0 10% 0;
+        }
+        .menuTopBar a{
+            height: 52px;
+            text-decoration: none;
+            font-size: 15px;
+            vertical-align: middle;
+            color: #FFFFFF;
+        }
+        .menuTopBar .botonMenuTop:hover{
+            background-color: #008e76;
+        }
+        .menuTopBar .botonMenuTop{
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background-color: #00bfa5;
+            color: #ffffff;
+        }
+        @media (max-width: 991px) {
+            body {
+                margin: 150px 0 0;
+            }
+            .menuTopBarS{
+                padding: 0 0 0;
+                background-color: black;
+            }
+        }
+    </style>
+
+    <title>Política de publicación</title>
+</head>
+
+<body>
+    <dgm-navbar></dgm-navbar>
+    
+    <div class="menuTopBar menuTopBarS">
+        <div class="col-xs-3 col-md-3" style="padding: 0 0 0;">
+            <a href="/contratacionesabiertas/contratos/" class="botonMenuTop">Inicio</a>
+        </div>
+        <div class="col-xs-3 col-md-3" style="padding: 0 0 0;">
+            <a href="/contratacionesabiertas/politicadepublicacion" class="botonMenuTop"  style="background-color: #008e76">Política de publicación</a>
+        </div>
+        <div class="col-xs-3 col-md-3" style="padding: 0 0 0;">
+            <a href="/contratacionesabiertas/implementa" class="botonMenuTop">Implementa el EDCA-MX</a>
+        </div>
+        <div class="col-xs-3 col-md-3" style="padding: 0 0 0;">
+            <a href="/contratacionesabiertas/datosabiertos" class="botonMenuTop">Datos abiertos</a>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-default navbar-fixed-top hidden-sm hidden-xs">              
+            <div class="container">   
+                    <ul class="breadcrumb">
+                        <li><a href="/contratacionesabiertas/"><i class="glyphicon glyphicon-home"></i></a></li>
+                        <li><a href="/contratacionesabiertas/contratos/">Instituto Zacatecano de Transparencia y Acceso a la Información</a></li>
+                        <li><a href="#">Política de publicación</a></li>
+                    </ul>
+            </div>               
+     </nav>
+    
+    <div class="breadcrumb-container">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <ul class="breadcrumb">
+                 <!--     <li><a href="/contratacionesabiertas/"><i class="glyphicon glyphicon-home"></i></a></li>
+                      <li><a href="/contratacionesabiertas/contratos/">Instituto Nacional de Transparencia, Acceso a la Información y Protección de Datos Personales</a></li>
+                      <li><a href="#">Acerca</a></li>  -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 post">
+                <div ng-bind-html="content" class="content ng-binding">
+                    <h1 style="text-align: center;">Política de publicación del Estándar de Datos de Contrataciones Abiertas en México</h1>
+                </div>
+
+                <h4><strong>1. Introducción</strong></h4>
+                <p>El Estándar de Datos de Contrataciones Abiertas es un ejercicio de transparencia proactiva y datos abiertos, el cual consiste
+                   en poner a disposición de la ciudadanía a través de una plataforma digital, información de interés público sobre la manera en 
+                   que se ejercen las contrataciones públicas en cada una de las etapas de su ejercicio: desde la elaboración del estudio de 
+                   mercado, pasando por la publicación de las convocatorias, el análisis de las propuestas que se inscriben para concursar en una
+                   contratación determinada, los criterios de selección y todo el proceso hasta la finalización de dicho contrato.</p>
+                <p>Inicialmente, Open Contracting Partnership (OCP) determinó los datos y documentos mínimos que debían ser publicados durante 
+                   cada una de las etapas de los procedimientos de contratación a través del Open Contracting Data Standard (OCDS).</p>
+                <p>Posteriormente, el Grupo Impulsor de la Alianza para las Contrataciones Abiertas en México (ACA), del cual el Instituto Nacional 
+                   de Transparencia, Acceso a la Información y Protección de Datos Personales (INAI) forma parte, revisó y adaptó el OCDS, tomando en 
+                   consideración los procedimientos de contratación, normativa y terminología mexicanos, dando como resultado el Estándar de Datos de 
+                   Contrataciones Abiertas en México (EDCA-MX).</p>
+                <p>El EDCA-MX es un instrumento que establece los elementos mínimos indispensables que deberán documentarse a lo largo de cada una de 
+                   las etapas del procedimiento de contratación en México y es compatible con el sistema de compras gubernamentales en México y la 
+                   normativa nacional de transparencia (LGTAIP, Art. 70, Fracción XXVIII).</p>
+                <p>Una vez implementado el estándar por parte del INAI, el Instituto Zacatecano de Transparencia, Acceso a la Información y Protección
+                   de Datos Personales (IZAI) a principios del 2019, comenzó a trabajar en la implementación del EDCA MX.</p>
+                <p>Con la implementación del Estándar de Datos de Contrataciones Abiertas el IZAI, pretende poner a disposición de la ciudadanía 
+                   información de interés sobre el ejercicio y ejecución de sus recursos, asimismo, el IZAI encabeza el grupo piloto de sujetos obligados
+                   en el que se pretende replicar el desarrollo del estándar en mención.</p>
+                <br>
+                <h4><strong>2. Marco normativo</strong></h4>
+                <br>
+                <ul style="list-style-type: disc;">
+                    <li>Constitución Política de los Estados Unidos Mexicanos</li>
+                    <li>Ley General de Contabilidad Gubernamental</li>
+                    <li>Ley de Transparencia y Acceso a la Información Pública del Estado de Zacatecas</li>
+                    <li>Ley de Adquisiciones, Arrendamientos y Servicios del Estado de Zacatecas y sus Municipios</li>
+                    <li>Ley de Disciplina Financiera y Responsabilidad Hacendaria del Estado de Zacatecas y sus Municipios</li>
+                    <li>Ley de Fiscalización y Rendición de Cuentas para el Estado de Zacatecas</li>
+                    <li>Presupuesto de Egresos del Estado de Zacatecas para el Ejercicio Fiscal 2019.</li>
+                    <li>Presupuesto de Egresos del Estado de Zacatecas para el Ejercicio Fiscal 2020.</li>
+                </ul>
+                <br>
+                <h4><strong>3. Objetivos</strong></h4>
+                <p>Establecer la política que permitirá asegurar que la información relacionada con los procedimientos de contratación que corren a 
+                   cargo del Instituto Zacatecano de Transparencia, Acceso a la Información y Protección de Datos Personales se publique de acuerdo al 
+                   EDCA-MX, con el fin de promover su transformación en conocimiento público útil que facilite la toma de decisiones y la integridad 
+                   pública.</p>
+                <br>
+                <h5><strong>3.1 Objetivos específicos</strong></h5>
+                <ul style="list-style-type: disc;">
+                    <li>Garantizar que la información se publique en formatos abiertos para que pueda ser usada, reutilizada y redistribuida por cualquier interesado.</li>
+                    <li>Garantizar que la información que se publique en el portal de contrataciones abiertas se actualice de manera constante, de acuerdo a la periodicidad que para tal efecto establezca el Instituto.</li>
+                    <li>Facilitar esquemas de interoperabilidad entre sistemas para publicar la información estandarizada y facilitar su uso.</li>
+                    <li>Desarrollo de herramientas tecnológicas que utilicen los datos y los transformen en información accionable para la toma de decisiones.</li>
+                </ul>
+                <br>
+                <h4><strong>4. Alcance</strong></h4>
+                <p>La publicación de la información correspondiente a las licitaciones, adjudicaciones y contrataciones que corren a cargo del Instituto,  
+                   se realizará a partir del ejercicio 2019 y se actualizará de manera trimestral a partir del ejercicio 2020.</p>
+                <br>
+                <h4><strong>5. Política de publicación</strong></h4>
+                <p>El IZAI, publicará la información conforme a la versión 1.1 del EDCA, o en su caso, de acuerdo a la versión más actualizada que emita el 
+                   INAI, relativos a los procedimientos de contratación celebrados durante el primer semestre de ese año. </p>
+                <p>El proceso de contrataciones abierta consta de cinco etapas, las cuales se enlistan a continuación:</p>
+                <br>
+                <ul style="list-style-type: disc;">
+                    <li><strong>Planeación</strong></li>
+                    <p>La planeación es el proceso a través del cual se organizan las tareas teniendo en cuenta los factores que intervienen en ella, en 
+                       este caso es necesario identificar los datos sobre el presupuesto, fundamento y descripción general del proyecto; así como sus 
+                       documentos, estudios y evaluaciones preparatorios relevantes.</p>
+                    <li><strong>Licitación</strong></li>
+                    <p>A través del proceso de licitación se adjudica la realización de una obra o un servicio. Durante el desarrollo de esta etapa es 
+                       indispensable reconocer los datos sobre el proceso de adjudicación del proyecto, como tipo de procedimiento, valor, método y criterios 
+                       de adjudicación y aclaraciones, fechas relevantes y datos del testigo social, entre otros datos sobresalientes de la licitación.</p>
+                    <li><strong>Adjudicación</strong></li>
+                    <p>La adjudicación es el proceso mediante el cual, la institución otorga a un proveedor la realización de una obra o la prestación de un 
+                       servicio, para lo cual, es indispensable contar con los datos del proveedor asignado para el proyecto, el proceso de adjudicación, sus 
+                       documentos, inconformidades y modificaciones.</p>
+                    <li><strong>Contratación</strong></li>
+                    <p>La contratación es la formalización del acto comercial, para ellos, es necesario contar con los datos sobre la firma del contrato en 
+                       donde se establecen las particularidades del bien o servicio, periodos de pago, entrega y sus documentos principales.</p>
+                    <li><strong>Implementación</strong></li>
+                    <p>Consiste en el proceso de la planificación en el que el plan es aprobado y ejecutado, para esta etapa es indispensable identificar 
+                       los datos sobre la ejecución del proyecto, como las fechas y pagos correspondientes por el bien o servicio, hitos del proyecto y 
+                       evidencia de la ejecución.</p>
+                </ul>
+                <br>
+                <div align="center">
+                    <img src="/contratacionesabiertas/static/images/etapas.png">
+                </div>
+                <br>
+                <h5><strong>5.1 Sobre el sitio de publicación</strong></h5>
+                <p>La información correspondiente a las licitaciones, adjudicaciones y contrataciones del Instituto Zacatecano de Transparencia, Acceso a la 
+                   Información y Protección de Datos Personales, será publicada a través de la página de internet: </p>
+                <p><a href="http://www.contratacionesabiertas.izai.org.mx" target="_blank">www.contratacionesabiertas.izai.org.mx</a></p>
+                <p>El portal en el que se pone a disposición de la ciudadanía la información, cuenta con las siguientes características:</p>
+                <br>
+                <ul style="list-style-type: disc;">
+                    <li>La publicación de la información es en formatos abiertos, es decir, cuenta con la opción de descargar los archivos en formatos simples y de fácil manejo para el intercambio de la información, como JavaScript Object Nolation (JSON) y comma – separated values (CSV).</li>
+                    <li>La plataforma cuenta con elementos básicos que le permiten al usuario localizar la información de manera rápida y efectiva, tales como:</li>
+                        <ul style="list-style-type: none;">
+                            <li>- Buscadores generales;</li>
+                            <li>- Filtros avanzados;</li>
+                            <li>- Perfiles por contratación;</li>
+                            <li>- Pestañas que conducen a las etapas de la contratación, y;</li>
+                            <li>- El contenido es categorizado y etiquetado para garantizar la búsqueda.</li>
+                        </ul>
+                    <li>En la plataforma es posible encontrar infografías que presentan de manera dinámica información relevante.</li>
+                    <li>El portal cuenta con un apartado en el que se muestra información estadística sobre los rubros del proceso de contratación.</li>
+                    <li>Se implementa un diseño inclusivo, es decir, accesible a las personas de todas las capacidades.</li>
+                    <li>Cuenta con las restricciones de privacidad necesarias para garantizar la seguridad en la navegación del usuario.</li>
+                </ul>
+                <br>
+                <h5><strong>5.2 Características de la información</strong></h5>
+                <ul style="list-style-type: disc;">
+                    <li>La información que se publique debe ser de calidad.</li>
+                    <li>La información publicada debe ser veraz. </li>
+                    <li>La información se debe difundir por medios afines a las características de las personas a las que se dirige.</li>
+                    <li>La información debe ser evaluada permanentemente.</li>
+                    <li>La sociedad debe ser el origen y el fin de la publicación de la información.</li>
+                </ul>
+                <br>
+                <h5><strong>5.3 Origen de la información</strong></h5>
+                <p>A través del mapeo a nivel de campo para EDCA-MX se determinó que la información que será sujeta a publicación se deriva de 
+                   cuatro documentos fuente:</p>
+                <br>
+                <ul style="list-style-type: disc;">
+                    <li>Cotización</li>
+                    <li>Dictámen</li>
+                    <li>Contrato</li>
+                    <li>Orden de pago</li>
+                </ul>
+                <br>
+                <p>Los campos a publicar por cada etapa, son los siguientes:</p>
+                <br>
+                <ul style="list-style-type: disc;">
+                    <li><strong>Planeación</strong></li>
+                        <ul style="list-style-type: none;">
+                            <li>- <strong>Justificación.</strong> Corresponde a la justificación de la compra o contratación.</li>
+                            <li>- <strong>Fecha.</strong> Corresponde a la fecha de presentación de cotización</li>
+                            <li>- <strong>Descripción.</strong> Corresponde a la descripción de los bienes, servicios u obras públicas a ser contratadas.</li>
+                            <li>- <strong>Cantidad.</strong> Corresponde al número de unidades requeridas.</li>
+                            <li>- <strong>Monto.</strong> Corresponde al valor unitario.</li>
+                            <li>- <strong>Nombre del actor.</strong> Corresponde al nombre de la organización o participante en el proceso.</li>
+                        </ul>
+                    <li><strong>Licitación / Adjudicación</strong></li>
+                        <ul style="list-style-type: none;">
+                            <li>- <strong>Identificador</strong> Corresponde al número con el que se identifica el proceso de licitación / adjudicación.</li>
+                            <li>- <strong>Título</strong> Corresponde al nombre con el que se identifica a la licitación / adjudicación.</li>
+                            <li>- <strong>Descripción</strong> Corresponde a una descripción detallada de la licitación / adjudicación.</li>
+                            <li>- <strong>Método de contratación</strong> Corresponde a los elementos que se tomaron en cuenta para la selección del proyecto.</li>
+                            <li>- <strong>Justificación</strong> Corresponde a las razones del método de contratación</li>
+                            <li>- <strong>Monto</strong> Corresponde al valor económico de la adjudicación</li>
+                            <li>- <strong>Nombre del actor</strong> Corresponde al nombre del actor o contratista adjudicado</li>
+                            <li>- <strong>Origen del recurso</strong> Corresponde a la partida presupuestal del recurso invertido.</li>
+                        </ul>
+                    <li><strong>Contratación</strong></li>
+                        <ul style="list-style-type: none;">
+                            <li>- <strong>Identificador del contrato</strong> Corresponde al número con el que se identifica el contrato.</li>
+                            <li>- <strong>Título del contrato</strong> Corresponde al título o nombre con el que se identifica el contrato.</li>
+                            <li>- <strong>Prestador</strong> Corresponde al nombre del actor o contratista adjudicado</li>
+                            <li>- <strong>Contratante</strong> Corresponde a la institución pública contratante.</li>
+                            <li>- <strong>Fecha de inicio</strong> Corresponde a la fecha de inicio de la contratación o adjudicación.</li>
+                            <li>- <strong>Fecha de término</strong> Corresponde a la fecha de término de la contratación o adjudicación.</li>
+                            <li>- <strong>Monto</strong> Valor o monto total del contrato.</li>
+                            <li>- <strong>Fecha</strong> Fecha en que se firmó el contrato.</li>
+                        </ul>
+                        <li><strong>Ejecución</strong></li>
+                        <ul style="list-style-type: none;">
+                            <li>- <strong>Identificador</strong> Número con el que se identifica la transacción.</li>
+                            <li>- <strong>Fecha de transacción</strong> Corresponde a la fecha en la que se programa el pago de la transacción.</li>
+                            <li>- <strong>Monto</strong> Corresponde al Valor de la transacción.</li>
+                            <li>- <strong>Nombre del actor</strong> Corresponde al nombre del actor o contratista adjudicado.</li>
+                        </ul>
+                </ul>
+                <br>
+                <h5><strong>5.4 Información de referencia</strong></h5>
+                <ul style="list-style-type: disc;">
+                    <li><strong>Actores involucrados</strong></li>
+                        <p>Para identificar fielmente a todos los actores involucrados en el procedimiento de contratación se utiliza la lista 
+                           de códigos “Registro Federal de Contribuyentes (RFC)”, tanto para personas físicas como morales.</p>
+                    <li><strong>Ítems</strong></li>
+                        <p>Para identificar los ítems contratados según el EDCA, se utiliza el “Clasificador por objeto del gasto” que cuenta con 
+                           cuatro dígitos y hacen referencia al bien, servicio u obra pública contratado.</p>
+                    <li><strong>Información presupuestaria</strong></li>
+                        <p>Con el fin de ligar la planeación institucional con las contrataciones públicas, se retomó la estructura programática 
+                           definida en el Presupuestos de Egresos del Estado de Zacatecas 2016, 2017, 2018, 2019 y 2020.</p>
+                </ul> 
+                <br>
+                <h5><strong>5.5 Frecuencia de la actualización de datos</strong></h5>
+                <ul style="list-style-type: disc;">
+                    <li><strong>Primera etapa</strong></li>
+                        <p>Durante la primera etapa se llevará a cabo la alimentación del portal de Contrataciones Abiertas <a href="http://www.contratacionesabiertas.izai.org.mx" target="_blank">www.contratacionesabiertas.izai.org.mx</a> con la información 
+                           correspondiente a las licitaciones, adjudicaciones y contrataciones de los ejercicios 2016, 2017, 2018 y 2019.</p>
+                        <br>
+                        <div align="center">
+                            <img src="/contratacionesabiertas/static/images/grafica.png">
+                        </div>
+                        <br>
+                    <li><strong>Segunda etapa</strong></li>
+                        <p>Durante la segunda etapa se llevará a cabo la captura de la información correspondiente al primer semestre del ejercicio 2020.</p>
+                        <p>Posteriormente y de acuerdo a las necesidades y requerimientos del Instituto, se determinó que la actualización de la información, 
+                           se realizará de manera trimestral, como se muestra a continuación.</p>
+                </ul>
+                <br>
+                <table style="width: 50%">
+                    <tr>
+                        <th class="th2"></th>
+                        <th class="th2">Trimestre</th>
+                        <th class="th2">Período de actualización</th>
+                    </tr>
+                    <tr>
+                        <td class="td2"><strong>1</strong></td>
+                        <td class="td2">Enero - Marzo</td>
+                        <td class="td2">Los primeros 10 días hábiles del mes de abril</td>
+                    </tr>
+                    <tr>
+                        <td class="td2"><strong>2</strong></td>
+                        <td class="td2">Abril - Junio</td>
+                        <td class="td2">Los primeros 10 días hábiles del mes de julio</td>
+                    </tr>
+                    <tr>
+                        <td class="td2"><strong>3</strong></td>
+                        <td class="td2">Julio - Septiembre</td>
+                        <td class="td2">Los primeros 10 días hábiles del mes de octubre</td>
+                    </tr>
+                    <tr>
+                        <td class="td2"><strong>4</strong></td>
+                        <td class="td2">Octubre - Diciembre</td>
+                        <td class="td2">Los primeros 10 días hábiles del mes de enero</td>
+                    </tr>
+                </table>
+                <br>
+                <h5><strong>5.6 Responsables de la publicación</strong></h5>
+                <p>En el IZAI la Dirección Administrativa es la responsable de la captura de información dentro de la herramienta de 
+                   Contrataciones Abiertas.</p>
+                <p>La Dirección de Tecnologías de la Información es la encargada de dar seguimiento y soporte a la captura por parte 
+                   de la Dirección Administrativa del IZAI. La DTI solo hace validaciones sobre la naturaleza de los datos, pero no sobre 
+                   la veracidad de los mismos, por lo que la información contenida en cada publicación es responsabilidad exclusiva de la 
+                   Unidad Administrativa que la genera.</p>
+                <br>
+                <h4><strong>Datos de contacto</strong></h4>
+                <p>Sobre la publicación de los datos:</p>
+                <p style="text-indent: 40px;">m.palacios@izai.org.mx</p>
+                <br>
+                <h4><strong>6. Licencia de publicación de datos</strong></h4>
+                <p>Estos datos pueden ser utilizados, reutilizados y redistribuidos por cualquier usuario y para cualquier fin, de acuerdo con 
+                   el “Decreto por el que se establece la regulación en materia de Datos Abiertos”, publicado el 20 de febrero de 2015 en el Diario 
+                   Oficial de la Federación:</p>
+                <p><strong>Artículo Primero.-</strong> [...] los datos de carácter público, generados por las dependencias y entidades de la 
+                   Administración Pública Federal y por las empresas productivas del Estado, se pondrán a disposición de la población como datos 
+                   abiertos, con el propósito de facilitar su acceso, uso, reutilización y redistribución para cualquier fin, conforme a los 
+                   ordenamientos jurídicos aplicables. [...]</p>
+            </div>
+        </div>
+    </div>
+	<br>
+	<br>
+
+    <dgm-footer></dgm-footer>
+    <script src="/contratacionesabiertas/static/bower_components/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="/contratacionesabiertas/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="<%= process.env.CDN_URL %>/bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+</body>
+
+</html>
