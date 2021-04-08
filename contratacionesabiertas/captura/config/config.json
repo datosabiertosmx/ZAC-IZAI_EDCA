@@ -1,8 +1,9 @@
 {
   "development": {
-    "username": "captura",
+    "username": "prueba_captura",
     "password": "p4ssw0rd",
     "database": "edca",
+    "port": "5432",
     "host": "localhost",
     "dialect": "postgres",
     "operatorsAliases": 0

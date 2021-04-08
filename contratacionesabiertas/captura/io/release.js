@@ -265,180 +265,43 @@ function release(db) {
         let roles = await generateRoles();
         let members = await generateMembers();
         let additionalsContacts = await generateAdditionalContactPoints();
-        var arrayParties = new Array();
-        parties.forEach(p => {
-            var objPartie = new Object();
-            var objIdentifier = new Object();
-            var objAddress = new Object();
-            var objContactPoint = new Object();            
-            if(p.naturalperson == true){
-                roles[p.id].forEach(rol => {
-                    if(rol == 'tenderer' || rol == 'supplier' || rol == 'issuingSupplier' || rol == 'official'){
-                        if(p.identifier_scheme !== null && p.identifier_scheme !== "")
-                        objIdentifier.scheme = p.identifier_scheme;
-                        if(p.identifier_id !== null && p.identifier_id !== "")
-                        objIdentifier.id = p.identifier_id;
-                        if(p.identifier_legalname !== null && p.identifier_legalname !== "")
-                        objIdentifier.legalName = p.identifier_legalname;
-                        if(p.naturalperson !== null && p.naturalperson !== "")
-                        objIdentifier.legalPersonality = p.naturalperson ? 'naturalPerson' : 'legalPerson';
-                        if(p.givenname !== null && p.givenname !== "")
-                        objIdentifier.givenName = p.givenname;
-                        if(p.surname !== null && p.surname !== "")
-                        objIdentifier.patronymicName = p.surname;
-                        if(p.additionalsurname !== null && p.additionalsurname !== "")
-                        objIdentifier.matronymicName = p.additionalsurname;
 
-                        if(p.contactpoint_name !== null && p.contactpoint_name !== "")
-                        objContactPoint.name = p.contactpoint_name;
-                        if(p.contactpoint_email !== null && p.contactpoint_email !== "")
-                        objContactPoint.email = p.contactpoint_email;
-                        if(p.contactpoint_telephone !== null && p.contactpoint_telephone !== "")
-                        objContactPoint.telephone = p.contactpoint_telephone;
-                        if(p.contactpoint_faxnumber !== null && p.contactpoint_faxnumber !== "")
-                        objContactPoint.faxNumber = p.contactpoint_faxnumber;
-                        if(p.contactpoint_url !== null && p.contactpoint_url !== "")
-                        objContactPoint.url = p.contactpoint_url;
-                        if(p.contactpoint_type !== null && p.contactpoint_type !== "")
-                        objContactPoint.type = p.contactpoint_type;
-                        if(p.contactpoint_givenname !== null && p.contactpoint_givenname !== "")
-                        objContactPoint.givenName = p.contactpoint_givenname;
-                        if(p.surname !== null && p.surname !== "")
-                        objContactPoint.patronymicName = p.surname;
-                        if(p.contactpoint_additionalsurname !== null && p.contactpoint_additionalsurname !== "")
-                        objContactPoint.matronymicName = p.contactpoint_additionalsurname;
-                        if(p.contactpoint_language !== null && p.contactpoint_language !== "")
-                        objContactPoint.availableLanguage = p.contactpoint_language ? p.contactpoint_language.split(',') : undefined
-                        
-                        if(p.address_streetaddress !== null && p.address_streetaddress !== "")
-                        objAddress.streetAddress = p.address_streetaddress;
-                        if(p.address_locality !== null && p.address_locality !== "")
-                        objAddress.locality = p.address_locality;
-                        if(p.address_region !== null && p.address_region !== "")
-                        objAddress.region = p.address_region;
-                        if(p.address_postalcode !== null && p.address_postalcode !== "")
-                        objAddress.postalCode = p.address_postalcode;
-                        if(p.address_countryname !== null && p.address_countryname !== "")
-                        objAddress.countryName = p.address_countryname;
-
-                        if(p.name !== null && p.name !== "")
-                        objPartie.name = p.name;
-                        if(p.partyid !== null && p.partyid !== "")
-                        objPartie.id = p.partyid;
-                        if(Object.entries(objIdentifier).length > 0)
-                        objPartie.identifier = objIdentifier;
-                        if(Object.entries(objAddress).length > 0)
-                        objPartie.address = objAddress;
-                        if(Object.entries(objContactPoint).length > 0)
-                        objPartie.contactPoint = objContactPoint;
-
-                        if(roles[p.id] !== undefined)
-                        objPartie.roles = roles[p.id] || [];
-                        if(members[p.id] !== undefined)
-                        objPartie.memberOf = members[p.id] || [];
-                        if(additionalsContacts[p.id] !== undefined)
-                        objPartie.additionalContactPoints = additionalsContacts[p.id] || [];
-                        if(p.position !== "" && p.position !== null)
-                        objPartie.position = p.position;
-                        arrayParties.push(objPartie)
-                    }else{
-                        if(p.identifier_scheme !== null && p.identifier_scheme !== "")
-                        objIdentifier.scheme = p.identifier_scheme;
-                        if(p.identifier_id !== null && p.identifier_id !== "")
-                        objIdentifier.id = p.identifier_id;
-                        if(p.identifier_legalname !== null && p.identifier_legalname !== "")
-                        objIdentifier.legalName = p.identifier_legalname;
-                        if(p.naturalperson !== null && p.naturalperson !== "")
-                        objIdentifier.legalPersonality = p.naturalperson ? 'naturalPerson' : 'legalPerson';
-                        if(p.givenname !== null && p.givenname !== "")
-                        objIdentifier.givenName = p.givenname;
-                        if(p.surname !== null && p.surname !== "")
-                        objIdentifier.patronymicName = p.surname;
-                        if(p.additionalsurname !== null && p.additionalsurname !== "")
-                        objIdentifier.matronymicName = p.additionalsurname;
-
-                        if(p.name !== null && p.name !== "")
-                        objPartie.name = p.name;
-                        if(p.partyid !== null && p.partyid !== "")
-                        objPartie.id = p.partyid;
-                        if(Object.entries(objIdentifier).length > 0)
-                        objPartie.identifier = objIdentifier;
-                        if(roles[p.id] !== undefined)
-                        objPartie.roles = roles[p.id] || []
-                        arrayParties.push(objPartie)
-                    }
-                });
-            }else{
-                if(p.identifier_scheme !== null && p.identifier_scheme !== "")
-                objIdentifier.scheme = p.identifier_scheme;
-                if(p.identifier_id !== null && p.identifier_id !== "")
-                objIdentifier.id = p.identifier_id;
-                if(p.identifier_legalname !== null && p.identifier_legalname !== "")
-                objIdentifier.legalName = p.identifier_legalname;
-                if(p.naturalperson !== null && p.naturalperson !== "")
-                objIdentifier.legalPersonality = p.naturalperson ? 'naturalPerson' : 'legalPerson';
-                if(p.givenname !== null && p.givenname !== "")
-                objIdentifier.givenName = p.givenname;
-                if(p.surname !== null && p.surname !== "")
-                objIdentifier.patronymicName = p.surname;
-                if(p.additionalsurname !== null && p.additionalsurname !== "")
-                objIdentifier.matronymicName = p.additionalsurname;
-
-                if(p.contactpoint_name !== null && p.contactpoint_name !== "")
-                objContactPoint.name = p.contactpoint_name;
-                if(p.contactpoint_email !== null && p.contactpoint_email !== "")
-                objContactPoint.email = p.contactpoint_email;
-                if(p.contactpoint_telephone !== null && p.contactpoint_telephone !== "")
-                objContactPoint.telephone = p.contactpoint_telephone;
-                if(p.contactpoint_faxnumber !== null && p.contactpoint_faxnumber !== "")
-                objContactPoint.faxNumber = p.contactpoint_faxnumber;
-                if(p.contactpoint_url !== null && p.contactpoint_url !== "")
-                objContactPoint.url = p.contactpoint_url;
-                if(p.contactpoint_type !== null && p.contactpoint_type !== "")
-                objContactPoint.type = p.contactpoint_type;
-                if(p.contactpoint_givenname !== null && p.contactpoint_givenname !== "")
-                objContactPoint.givenName = p.contactpoint_givenname;
-                if(p.surname !== null && p.surname !== "")
-                objContactPoint.patronymicName = p.surname;
-                if(p.contactpoint_additionalsurname !== null && p.contactpoint_additionalsurname !== "")
-                objContactPoint.matronymicName = p.contactpoint_additionalsurname;
-                if(p.contactpoint_language !== null && p.contactpoint_language !== "")
-                objContactPoint.availableLanguage = p.contactpoint_language ? p.contactpoint_language.split(',') : undefined
-                
-                if(p.address_streetaddress !== null && p.address_streetaddress !== "")
-                objAddress.streetAddress = p.address_streetaddress;
-                if(p.address_locality !== null && p.address_locality !== "")
-                objAddress.locality = p.address_locality;
-                if(p.address_region !== null && p.address_region !== "")
-                objAddress.region = p.address_region;
-                if(p.address_postalcode !== null && p.address_postalcode !== "")
-                objAddress.postalCode = p.address_postalcode;
-                if(p.address_countryname !== null && p.address_countryname !== "")
-                objAddress.countryName = p.address_countryname;
-
-                if(p.name !== null && p.name !== "")
-                objPartie.name = p.name;
-                if(p.partyid !== null && p.partyid !== "")
-                objPartie.id = p.partyid;
-                if(Object.entries(objIdentifier).length > 0)
-                objPartie.identifier = objIdentifier;
-                if(Object.entries(objAddress).length > 0)
-                objPartie.address = objAddress;
-                if(Object.entries(objContactPoint).length > 0)
-                objPartie.contactPoint = objContactPoint;
-
-                if(roles[p.id] !== undefined)
-                objPartie.roles = roles[p.id] || [];
-                if(members[p.id] !== undefined)
-                objPartie.memberOf = members[p.id] || [];
-                if(additionalsContacts[p.id] !== undefined)
-                objPartie.additionalContactPoints = additionalsContacts[p.id] || [];
-                if(p.position !== "" && p.position !== null)
-                objPartie.position = p.position;
-                arrayParties.push(objPartie)
-            }
-        });
-        return arrayParties;
+        return parties.map(p => clean({
+            name: p.name,
+            id: p.partyid,
+            identifier: clean({
+                scheme: p.identifier_scheme,
+                id: p.identifier_id,
+                legalName: p.identifier_legalname,
+                legalPersonality: p.naturalperson ? 'naturalPerson' : 'legalPerson',
+                givenName: p.givenname,
+                patronymicName: p.surname,
+                matronymicName: p.additionalsurname
+            }),
+            address: clean({
+                streetAddress: p.address_streetaddress,
+                locality: p.address_locality,
+                region: p.address_region,
+                postalCode: p.address_postalcode,
+                countryName: p.address_countryname,
+            }),
+            contactPoint: clean({
+                name: p.contactpoint_name,
+                email: p.contactpoint_email,
+                telephone: p.contactpoint_telephone,
+                faxNumber: p.contactpoint_faxnumber,
+                url: p.contactpoint_url,
+                type: p.contactpoint_type,
+                givenName: p.contactpoint_givenname,
+                patronymicName: p.contactpoint_surname,
+                matronymicName: p.contactpoint_additionalsurname,
+                availableLanguage: p.contactpoint_language ? p.contactpoint_language.split(',') : undefined
+            }),
+            roles: roles[p.id] || [],
+            memberOf: members[p.id] || [],
+            additionalContactPoints: additionalsContacts[p.id] || [],
+            position: p.position
+        }));
     }
 
     /**

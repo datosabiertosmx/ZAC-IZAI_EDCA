@@ -8,7 +8,13 @@
                 <li><a href="#" data-toggle="modal" data-target="#genericModal" data-action="search" data-user_id = "<%= user.id %>"> <i class="fa fa-search"></i> Buscar</a></li>
                 <li id="create_process"><a href="#"><i class="fa fa-plus"></i> Nueva</a></li>
                 <% if (user.isAdmin === true){%>
-                    <li data-toggle="modal" data-action="manage_process" data-target="#adminModal"><a href="#"><i class="fa fa-tasks"></i> Administrar</a></li>
+                    <li class="dropdown-submenu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-tasks"></i> Administrar</a>
+                        <ul class="dropdown-menu">
+                            <li data-toggle="modal" data-action="manage_process" data-target="#adminModal"><a href="#"><i class="fa fa-cubes"></i> Contrataciones</a></li>
+                            <li data-toggle="modal" data-action="manage_years" data-target="#adminModal"><a href="#"><i class="fa fa-calendar"></i> Periodos a publicar</a></li>
+                        </ul>
+                    </li>
                     <li data-toggle="modal" data-action="validate_proccess" data-target="#adminModal"><a href="#"><i class="fa fa-check"></i> Validar</a></li>
                 <%}%>            
                 <li role="separator" class="divider"></li>
@@ -35,7 +41,8 @@
                         <ul class="dropdown-menu">
                             <li data-toggle="modal" data-action="manage_ocid" data-target="#adminModal"><a href="#"><i class="fa fa-cubes"></i> Prefijo OCID</a></li>
                             <li data-toggle="modal" data-action="manage_oc4ids" data-target="#adminModal"><a href="#"><i class="fa fa-cubes"></i> Prefijo OC4IDS</a></li>
-                        <li data-toggle="modal" data-action="manage_metadata" data-target="#adminModal"><a href="#metadata"><i class="fa fa-cubes"></i> Licencia y pólitica de publicación</a></li>
+                            <li data-toggle="modal" data-action="manage_metadata" data-target="#adminModal"><a href="#metadata"><i class="fa fa-cubes"></i> Licencia y pólitica de publicación</a></li>
+                            <li data-toggle="modal" data-action="manage_policy" data-target="#adminModal"><a href="#metadata"><i class="fa fa-cubes"></i> Editar pólitica de publicación</a></li>
                         </ul>
                     </li>
                     <li class="dropdown-submenu">

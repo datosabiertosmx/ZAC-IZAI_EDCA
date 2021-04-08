@@ -106,6 +106,61 @@ $("#adminModal").on('show.bs.modal', function (event) {
                 });
             });
             break;
+        case 'manage_policy':
+            modal.find('.modal-title').text('Editar pólitica de publicación');
+            modal.find('#modal_content').html("");
+            modal.find('#modal_content').load('/admin/policy', () => {
+                modal.find('#update_policy_form').submit(function(e) {
+                    e.preventDefault(); 
+                    $.post('/admin/policy', $(this).serializeArray(), (res) => {
+                        alert(res.message);
+                        modal.modal('hide');
+                    }).fail(res =>  alert(res.responseJSON.message));
+                });
+            });
+            break;
+        case 'manage_years':
+            modal.find('.modal-title').text('Periodos a publicar');
+            modal.find('#modal_content').html("");
+            modal.find('#modal_content').load('/admin/years', () => {
+                modal.off('click', '[data-action="add_item"]');
+                modal.on('click', '[data-action="add_item"]', function (e) {
+                    e.preventDefault();
+                    var template = modal.find('#itemTemplate').html();
+                    var index = new Date().getTime();
+                    template = template.replace(/\[0\]/g, '[' + index + ']');
+                    var content = $(template).appendTo(modal.find('#items'));
+                });
+                modal.on('click', '[data-dismiss="item"]', function (e) {
+                    e.preventDefault();
+                    $(this).parent().remove();
+                    if (modal.find('#items').children().length == 0) {
+                        var template = modal.find('#itemTemplate').html();
+                        var index = new Date().getTime();
+                        template = template.replace(/\[0\]/g, '[' + index + ']');
+                        var content = $(template).appendTo(modal.find('#items'));
+                    }
+                });
+
+                modal.find('#admin_years_form').submit(function (event) {
+                    event.preventDefault();
+                    modal.find('#items').children().each(function (i) {
+                        $(this).find('input, textarea, select').each(function () {
+                            $(this).attr('name', $(this).attr('name').replace(/\[[0-9]+\]/g, '[' + i + ']'));
+                        });
+                    });
+                    $.ajax({
+                        url: '/new-admin-years',
+                        type: 'post',
+                        contentType: 'application/json',
+                        data: JSON.stringify($(this).serializeJSON())
+                    }).done(function (data) {
+                        alert(data.description);
+                        if (data.status === 'Ok') { modal.modal('hide'); }
+                    });
+                });
+            });
+            break;
         case 'validate_proccess':
             modal.find('.modal-dialog').css('width', '80%');
             modal.find('.modal-title').text('Validación de Procesos');

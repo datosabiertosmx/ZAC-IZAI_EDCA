@@ -49,7 +49,7 @@ var estatusContrato = [
 
 <ul id="pills" class="nav nav-pills nav-justified nav-pills-success">
     <li role="presentation" class="active"><a data-toggle="pill" href="#home" data-tooltip="crear_proceso" title="Información de la etapa de planeación del procedimiento de contratación. Considerar que, en una publicación de un procedimiento que se encuentra en planeación, es posible capturar información adicional en los campos apropiados ubicados a través de las otras secciones del esquema.">1. PLANEACIÓN <br></a></li>
-    <li role="presentation"><a onclick="check_detalles()" data-toggle="pill" href="#menu1" data-tooltip="crear_proceso" title="Actividades llevadas a cabo para celebrar una contratación.">2. LICITACIÓN <br><small id="tenderStatus"><%= getStatus(estatusLicitacion, tender.status, 'value', 'text') %></small></a></li>
+    <li role="presentation"><a data-toggle="pill" href="#menu1" data-tooltip="crear_proceso" title="Actividades llevadas a cabo para celebrar una contratación.">2. LICITACIÓN <br><small id="tenderStatus"><%= getStatus(estatusLicitacion, tender.status, 'value', 'text') %></small></a></li>
     <li role="presentation"><a data-toggle="pill" href="#menu2" data-tooltip="crear_proceso" title="Una adjudicación para una contratación determinada. Puede haber más de una adjudicación por licitación, por ejemplo, porque se pueden adjudicar a varios proveedores.">3. ADJUDICACIÓN <br><small id="awardStatus"><%= getStatus(estatusAdjudicacion, cp.awardstatus, 'value', 'text') %></small></a></li>
     <li role="presentation"><a data-toggle="pill" href="#menu3" data-tooltip="crear_proceso" title="Información sobre el contrato firmado entre el comprador y el/los proveedor/es.">4. CONTRATO <br><small id="contractStatus"><%= getStatus(estatusContrato, cp.contractstatus, 'value', 'text') %></small></a></li>
     <li role="presentation"><a data-toggle="pill" href="#menu4" data-tooltip="crear_proceso" title="Información relacionada con la ejecución del contrato de conformidad con las obligaciones establecidas en el mismo.">5. EJECUCIÓN <br><small id="implementationStatus"><%= getStatus(implementation_status,  cp.implementationstatus, 'code', 'title_esp') %></small></a></li>
@@ -280,9 +280,8 @@ var estatusContrato = [
 					En el caso de procedimientos de contratación financiados con recursos de Organismos Financieros Internacionales, respecto de los procedimientos de lista corta, comparación de precios y adjudicación directa, se señala el número de procedimiento que le asigne la dependencia o entidad correspondiente.'><!--ID-->
 					Identificador de la licitación</label>
                     <br>
-                    <input type="text" class="form-control" name="tenderid" value="<%= tender.tenderid %>" required>
+                    <input type="text" id="nombre-input" onchange="verificar()" class="form-control" name="tenderid" value="<%= tender.tenderid %>" required>
                 </p>
-                
                 <p><label data-tooltip="crear_proceso" title='Denominación del procedimiento de contratación que las dependencias y entidades señalan en CompraNet, en su caso.
 					En el caso de procedimientos de contratación financiados con recursos de Organismos Financieros Internacionales, respecto de los procedimientos de lista corta, comparación de precios y adjudicación directa, se señala la denominación del procedimiento que le asigne la dependencia o entidad correspondiente.'>
 					Denominación de la licitación<!--Title--></label>
@@ -389,13 +388,7 @@ var estatusContrato = [
                     <label data-tooltip="crear_proceso" title='Justificación del método de contratación. Esto es especialmente importante para los casos en los que se utilicen los métodos de contratación: limitada, directa y selectiva. 
                         Por ejemplo, en el caso de procedimientos de contratación por invitación a cuando menos tres personas o adjudicación directa, se señalan de manera general las razones por las cuáles resulta procedente la excepción a la licitación pública.'>Justificación del método de contratación<!--Procurement method rationale--></label>
                     <br>
-                    <select name="procurementmethod_rationale_id" id="pm_r_id" class="form-control" onchange="setIdentifier(this, 'procurementmethod_rationale', 'data-text');">
-                        <option value="" data-text="">Seleccione una opción</option>
-                    </select>
-                </p>
-
-                <p>
-                    <textarea class="form-control" name= "procurementmethod_rationale" id="pm_r" rows="5" readOnly><%= (typeof tender != "undefined")? tender.procurementmethod_rationale:''%></textarea>
+                    <textarea class="form-control" name= "procurementmethod_rationale" rows="5"><%= (typeof tender != "undefined")? tender.procurementmethod_rationale:''%></textarea>
                 </p>
                 
                 <br>
@@ -768,26 +761,11 @@ var estatusContrato = [
 
     // Cambia los valores en base a la relacion
     function setRelation(catalog, origin, target) {
-        var selected = origin.value;
-        
-        if (selected == 'Adhesiones y membresías'){
-            document.getElementById('pm_r_id').disabled = true;
-            document.getElementById('pm_r').readOnly = false;
-        } else {
-            document.getElementById('pm_r_id').disabled = false;
-            document.getElementById('pm_r').readOnly = true;
-        }
+        var selected = origin.value;       
         var c = catalog.find(e => e.id == selected);
 
         document.getElementsByName(target)[0].value = c != null ? c.value : '';
         document.getElementsByName(target + '_select')[0].value = c != null ? c.value : '';
-    }
-
-    function check_detalles(){      
-        if(document.getElementById("procurementmethod_details").value === "Adhesiones y membresías"){           
-            document.getElementById('pm_r_id').disabled = true;
-            document.getElementById('pm_r').readOnly = false;
-        } 
     }
 
     // Carga los catalogos relacionados
@@ -818,11 +796,20 @@ var estatusContrato = [
         }
     }
 
+    //Validar el campo Identificador de la licitación no tenga espacios en blanco
+    function verificar() {
+        var er = new RegExp(/\s/);
+        var licita = document.getElementById('nombre-input').value;
+        if(er.test(licita)){
+            alert('No se permiten espacios en blanco en el campo Identificador de la licitación.');
+            $('[name="tenderid"]').val('');   
+        }
+    }
+
     // Carga el valor deacuerdo a la relacion
     function setIdentifier(select, target, data) {
         var option = select.options[select.selectedIndex];
-        document.getElementsByName(target)[0].value = option.getAttribute(data);
-        
+        document.getElementsByName(target)[0].value = option.getAttribute(data);   
     }
 
     // Limpia el campo

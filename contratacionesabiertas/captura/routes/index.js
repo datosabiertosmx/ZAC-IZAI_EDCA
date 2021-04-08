@@ -749,6 +749,22 @@ let publishedAll = async (id_cp, publisher, host)  => {
     }
 }
 
+let sendToPNT = async (cp)  => {
+    console.log(`Actualizando Status de PNT... id_cp - ${cp}`)
+    try{
+        // se indica que ya se actualizo en pnt
+        await db_conf.edca_db.none(`update contractingprocess set 
+                    pnt_published = true, 
+                    pnt_date= now(),
+                    pnt_version = (SELECT version FROM logs WHERE contractingprocess_id = $1 AND logs.published = true ORDER BY update_date DESC LIMIT 1) 
+                where id = $1`, [cp]);
+    }
+    catch(e) {
+        console.log(e);
+        return res.status(400).json({message: 'No se ha podido actualizar el status'});
+    }
+}
+
 let updateTags = (data) => {
     
     return db_conf.edca_db.one(`insert into tags (contractingProcess_id, stage, planning, planningUpdate, tender, tenderAmendment, tenderUpdate, tenderCancellation, award,
@@ -1117,25 +1133,20 @@ router.post('/logs', isAuthenticated, function (req, res) {
             t.manyOrNone("select id, version, publisher, release_file, to_char(update_date, 'YYYY-MM-DD HH:MI:SS') as update_date_text from logs where contractingProcess_id = $1 and release_file is not null and publisher is not null order by id desc", [req.body.id])
         ]);
     }).then(function (data) {
-        console.log(`LOGS ${JSON.stringify(data,null,2)}`)
         var publisher = new Object();
         data[0].map(function (e) {
             publisher.id =  e.publisher;
         });
-
-        User.find(publisher).then(function (result) {
+        User.find().then(function (result) {
             data[0].map(function (e) {
                 var user = result.find(function (i) { return i.id == e.publisher});
-
                 if (user != null) {
                     e.publisher = user.username;
                 } else {
                     e.publisher = '';
                 }
-
                 return e;
             });
-
             res.render('modals/logs', {
                 logs: data[0]
             });
@@ -2034,6 +2045,16 @@ router.post('/new-quote-request', function (req, res) {
         });
 
         console.log('ERROR', error);
+    });
+});
+
+router.post('/new-admin-years', function (req, res) {
+    console.log(`/new-admin-years ${JSON.stringify(req.body)}`)
+    cp_functions.createFiscalYears(req.body).then(() =>{
+        res.json({
+            status: 'Ok',
+            description: 'Ejercicio fiscal actualizado.'
+        });
     });
 });
 
@@ -3752,7 +3773,7 @@ router.post('/search-contractingprocess', function (req, res) {
 
 router.post('/search-projects',async function (req, res) {
 
-   await db.edcapi_project_package.findAll({
+    await db.edcapi_project_package.findAll({
         include:[
             {
                 model: db.edcapi_project, 
@@ -3760,7 +3781,7 @@ router.post('/search-projects',async function (req, res) {
                 attributes: { exclude: ['createdAt','updatedAt']},
                 through: {attributes: []},
                 where: {
-                    identifier: {
+                    oc4idsIdentifier: {
                         //[Op.like]: Sequelize.literal('\'%'+req.body.search+'%\'')
                         [Op.substring]: req.body.search
                     }
@@ -3778,9 +3799,8 @@ router.post('/search-projects',async function (req, res) {
         attributes: { exclude: ['createdAt','updatedAt']},
         limit: 7
     }).then(async function (data) {
-        var prefix = await db.edcapi_project_prefix.findAll({ attributes: ['prefix']});    
-        console.log("#### DATA " + JSON.stringify(data))
-        res.json(data,prefix);
+        console.log("#### DATA " + JSON.stringify(data,null,2))
+        res.status(200).json(data)
     }).catch(function (error) {
         res.json([]);
         console.log(error);
@@ -4288,6 +4308,7 @@ router.post('/1.1/related_projects.html', function (req, res) {
     var arrayRelatedProjects = new Array();
     console.log("#### project_id " + project_id)
     project.findProject(project_id).then(value => {
+        console.log(`value ${JSON.stringify(value,null,2)}`)
         value[0].projects[0].relatedProjects.forEach(element => {
             var objRelatedProjects = new Object();
             if(element.relationship !== "" && element.relationship !== null){
@@ -4792,9 +4813,11 @@ router.post('/1.1/update_budgetbreakdown_project',async function(req,res){
     relBudgetBreakdownBudget = await db.edcapi_project_budget_breakdown_budget.findAll({
         where: {edcapiProjectBudgetBreakdownId: req.body.budget_budgetBreakdown_sourceParty}
     }).then(async function(data){
-        relBudgetProject = await db.edcapi_budget_project.findAll({
-            where: {edcapiBudgetId: data[0].budget_id}
-        }); 
+        if(data.length > 0){
+            relBudgetProject = await db.edcapi_budget_project.findAll({
+                where: {edcapiBudgetId: data[0].budget_id}
+            }); 
+        }
     }); 
     
     project.updateBudgetBreakdown(request).then(async function(){
@@ -4803,7 +4826,10 @@ router.post('/1.1/update_budgetbreakdown_project',async function(req,res){
                 description: "Los datos han sido actualizados",
             });
         }).then(function(){
-            project.updatePublishedDate(relBudgetProject[0].project_id,req.user);
+            if(relBudgetProject.project_id !== null){
+                project.updatePublishedDate(relBudgetProject[0].project_id,req.user);
+            }
+            
         }).catch(function (error) {
             console.log("Error - /1.1/update_budgetbreakdown_project " + error);
             res.status(400).jsonp({
@@ -5868,12 +5894,37 @@ router.get('/admin/oc4ids', isAuthenticated, async (req,res) => {
     });
 });
 
+router.get('/admin/policy', isAuthenticated, async (req,res) => {
+    cp_functions.getPolicy().then(function(value){
+        console.log('/admin/policy value ' + JSON.stringify(value))
+        res.render('modals/admin_policy', {policy: value});
+    })
+});
+
+router.post('/admin/policy', isAuthenticated, async (req,res) => {
+    console.log('/admin/policy post ' + JSON.stringify(req.body.textarea))
+    cp_functions.createPolicy(req.body.textarea).then(() => {
+        return res.status(200).json({message: 'Se registro correctamente'});
+    })
+});
+
 // update prefix ocid
 router.post('/admin/oc4ids', isAuthenticated, async (req,res) => {
     var value = req.body.value ? req.body.value.trim() : '';
     project.updatePrefix(value.replace(/ /g,"")).then(async function(){
         return res.status(200).json({message: 'Se ha registrado el prefijo'});
     });
+});
+
+// view years to publish
+router.get('/admin/years', isAuthenticated, async (req,res) => {
+    cp_functions.getFiscalYears().then(async arrayFiscalYear => {
+        console.log(`${JSON.stringify(arrayFiscalYear)}`)
+        res.render('modals/admin_years',{
+            fiscalYear : arrayFiscalYear
+        });
+    })
+    
 });
 
 router.get('/validate/:cpid', async  (req, res) => {
@@ -6998,7 +7049,22 @@ router.get('/edca/contractingprocess/:year',async function(req, res){
     console.log("························· /edca/contractingprocess/:year PARAMS "  + JSON.stringify(req.params));
     cp_functions.getContractingProcess(req.params, getHost(req), res).then(arrayReleasePackage => {
         if(arrayReleasePackage){
-            console.log(`RES ${JSON.stringify(arrayReleasePackage)}`)
+            return res.status(200).json({arrayReleasePackage});
+        }else{
+            return res.status(404).json({
+                status: 404,
+                message: `No se encontrarón resultados con el parámetro seleccionado.`
+            }
+        )}
+    })
+});
+
+router.get('/edca/cp/:id',async function(req, res){
+    console.log("························· /edca/contractingprocess/:id PARAMS "  + JSON.stringify(req.params));
+    cp_functions.getOneContractingProcess(req.params, getHost(req), res).then(arrayReleasePackage => {
+        console.log("arrayReleasePackage "  + JSON.stringify(arrayReleasePackage, null, 2));
+        
+        if(arrayReleasePackage){
             return res.status(200).json({arrayReleasePackage});
         }else{
             return res.status(404).json({
@@ -7167,6 +7233,7 @@ router.get('/generate/publishes',async function(req, res){
                     publisherUri : element.uri
                 })
                 publishedAll(id_cp, publisher, getHost(req));
+                sendToPNT(id_cp);
                 contador++;
                 if(contador == totalRegistros)
                 done = true;
@@ -7181,8 +7248,78 @@ router.get('/generate/publishes',async function(req, res){
         if(done)
         return res.json({status: 200,message: 'Procesos publicados'});
     })
+});
 
-    
+router.get('/edca/fiscalYears',async function(req, res){
+    console.log("························· /edca/fiscalYears ");
+    cp_functions.getFiscalYears().then(fiscalYears =>{
+        if(fiscalYears){
+            console.log(`RES ${JSON.stringify(fiscalYears)}`)
+            return res.status(200).json({fiscalYears});
+        }else{
+            return res.status(404).json({
+                status: 404,
+                message: `No se encontrarón registros.`
+            }
+        )}
+    });
+});
+
+router.get('/edca/policy', async (req,res) => {
+    cp_functions.getPolicy().then(function(value){
+        if(value){
+            console.log(`RES ${JSON.stringify(value[0])}`)
+            var policy = value[0].policy;
+            return res.status(200).json({policy});
+        }else{
+            return res.status(404).json({
+                status: 404,
+                message: `No se encontrarón registros.`
+            }
+        )}
+    })
+});
+
+router.get('/edca/amounts/',async function(req, res){
+    console.log("························· /edca/amounts/ "  + JSON.stringify(req.params));
+    db_conf.edca_db.task(function (t) {
+        return this.batch([
+            this.one('select count(*) as total from (select distinct partyid from contractingprocess, contract, parties, roles where contract.contractingprocess_id = contractingprocess.id and parties.contractingprocess_id = contractingprocess.id and parties.id = roles.parties_id and roles.supplier = true) as t;'), 
+            this.one('select count(*) as total from (select distinct contractingprocess.id from contractingprocess, contract where contractingprocess.id = contract.contractingprocess_id) t'),
+            this.one('select count(*) as total from contractingprocess, contract where contractingprocess.id = contract.contractingprocess_id and contract.exchangerate_amount > 0' ),
+            this.one('select sum((select sum(exchangerate_amount) from contract where contractingprocess_id = contractingprocess.id)) as total from contractingprocess where 1 = 1' ),
+            this.manyOrNone(`select t.procurementmethod_details, count(*) as conteo, sum(t.total) as total
+                from (select tender.procurementmethod_details,
+                    (select sum(exchangerate_amount) from contract where contractingprocess_id = contractingprocess.id) as total
+                    from contractingprocess
+                    inner join tender on tender.contractingprocess_id = contractingprocess.id
+                    where tender.procurementmethod_details is not null and tender.procurementmethod_details != '') as t 
+                group by t.procurementmethod_details order by total desc`),
+            this.manyOrNone(`select t.additionalprocurementcategories, count(*) as conteo, sum(t.total) as total
+                from (select tender.additionalprocurementcategories,
+                    (select sum(exchangerate_amount) from contract where contractingprocess_id = contractingprocess.id) as total
+                    from contractingprocess
+                    inner join tender on tender.contractingprocess_id = contractingprocess.id
+                    where tender.additionalprocurementcategories is not null and tender.additionalprocurementcategories != '') as t 
+                group by t.additionalprocurementcategories order by total desc`)
+        ]);
+    }).then(function (data) {
+        var amount = new Object();
+        amount.supplier_count= +data[0].total;
+        amount.cp_count= +data[1].total;
+        amount.contract_count= +data[2].total;
+        amount.contract_exchangerate_amount_total= data[3].total;
+        amount.total_procedimiento= data[4];
+        amount.total_destino= data[5];
+        return res.status(200).json({amount});
+    }).catch(function (error) {
+        console.log("ERROR: ", error);
+        return res.status(404).json({
+            status: 404,
+            message: `No se encontrarón resultados con el parámetro seleccionado.`
+        })
+    });
+
 });
 
 module.exports = router;
