@@ -1,68 +1,18 @@
 var initialise_form = function(selectionOptions) {
-    var filterers = $('.filter_block input');
-    filterers.change(function() {
-        var filters = [];
-        var targets = [];
-        filterers.filter(function() {
-            return !this.checked
-        }).each(function(k, v) {
-            filters[k] = v.value;
-            targets[k] = $(v).data('target');
-        });
-        use_filters(filters, targets);
-    });
-
-    var filterers1 = $('.filter_block1 input');
-    filterers1.change(function() {
-        var filters = [];
-        var targets = [];
-        filterers1.filter(function() {
-            return !this.checked
-        }).each(function(k, v) {
-            filters[k] = v.value;
-            targets[k] = $(v).data('target');
-        });
-        use_filters(filters, targets);
-    });
-
-    var filterers2 = $('.filter_block2 input');
-    filterers2.change(function() {
-        var filters = [];
-        var targets = [];
-        filterers2.filter(function() {
-            return !this.checked
-        }).each(function(k, v) {
-            filters[k] = v.value;
-            targets[k] = $(v).data('target');
-        });
-        use_filters(filters, targets);
-    });
-
-    var filterers3 = $('.filter_block3 input');
-    filterers3.change(function() {
-        var filters = [];
-        var targets = [];
-        filterers3.filter(function() {
-            return !this.checked
-        }).each(function(k, v) {
-            filters[k] = v.value;
-            targets[k] = $(v).data('target');
-        });
-        use_filters(filters, targets);
-    });
-
-    var filterers4 = $('.filter_block4 input');
-    filterers4.change(function() {
-        var filters = [];
-        var targets = [];
-        filterers4.filter(function() {
-            return !this.checked
-        }).each(function(k, v) {
-            filters[k] = v.value;
-            targets[k] = $(v).data('target');
-        });
-        use_filters(filters, targets);
-    });
+    var filtroSeleccionado = ""; 
+     var filterers = $('.filter_block input');
+     filterers.change(function() {
+         
+         var filters = [];
+         var targets = [];
+         filterers.filter(function() {
+             return !this.checked
+         }).each(function(k, v) {
+              filters[k] = v.value;
+              targets[k] = $(v).data('target');
+         });
+         use_filters(filters, targets);
+     });
 
     var groupSelect = $('#group-everything-by');
     for (var opt in selectionOptions) {
@@ -85,54 +35,44 @@ var initialise_form = function(selectionOptions) {
         var colorBy = colorSelect.val();
         color_by(colorBy);
     };
-    $('#clear_filters').click(function() {
-        if ($(this).hasClass('select')) {
-            $('.filter_block input').prop('checked', 'checked');
-        } else {
-            $('.filter_block input').prop('checked', false);
+    $('.clear').change(function(data) {
+        if (data.currentTarget.id == "clear_filters"){
+            if ($(this).hasClass('select')) {
+                $('.filter_block input').prop('checked', 'checked');
+            } else {
+                $('.filter_block input').prop('checked', false);
+            }
+        }else{
+            var claseCambio = data.currentTarget.id;
+            if ($(this).hasClass('select')) { 
+                if (claseCambio == "cProveedor"){
+                    $('.cProveedor').prop('checked','checked');
+                }else if (claseCambio == "cProcedimiento"){
+                    $('.cProcedimiento').prop('checked','checked');
+                }else if (claseCambio == "cDestino"){ 
+                    $('.cDestino').prop('checked','checked');
+                }else if (claseCambio.includes("rea")){
+                    $('.cArea').prop('checked','checked');
+                }else if (claseCambio == "cVigencia"){
+                    $('.cVigencia').prop('checked','checked');
+                } 
+            } else {
+                if (claseCambio == "cProveedor"){
+                    $('.cProveedor').prop('checked',false);
+                }else if (claseCambio == "cProcedimiento"){
+                    $('.cProcedimiento').prop('checked',false);
+                }else if (claseCambio == "cDestino"){  
+                    $('.cDestino').prop('checked',false);
+                }else if (claseCambio.includes("rea")){
+                    $('.cArea').prop('checked',false);
+                }else if (claseCambio == "cVigencia"){
+                    $('.cVigencia').prop('checked',false);
+                }	
+            }
         }
         $(this).toggleClass('select clear');
+        filtroSeleccionado = data.currentTarget.id; 
         filterers.change();
-        return false;
-    });
-    $('#clear_filters1').click(function() {
-        if ($(this).hasClass('select')) {
-            $('.filter_block1 input').prop('checked', 'checked');
-        } else {
-            $('.filter_block1 input').prop('checked', false);
-        }
-        $(this).toggleClass('select clear');
-        filterers1.change();
-        return false;
-    });
-    $('#clear_filters2').click(function() {
-        if ($(this).hasClass('select')) {
-            $('.filter_block2 input').prop('checked', 'checked');
-        } else {
-            $('.filter_block2 input').prop('checked', false);
-        }
-        $(this).toggleClass('select clear');
-        filterers2.change();
-        return false;
-    });
-    $('#clear_filters3').click(function() {
-        if ($(this).hasClass('select')) {
-            $('.filter_block3 input').prop('checked', 'checked');
-        } else {
-            $('.filter_block3 input').prop('checked', false);
-        }
-        $(this).toggleClass('select clear');
-        filterers3.change();
-        return false;
-    });
-    $('#clear_filters4').click(function() {
-        if ($(this).hasClass('select')) {
-            $('.filter_block4 input').prop('checked', 'checked');
-        } else {
-            $('.filter_block4 input').prop('checked', false);
-        }
-        $(this).toggleClass('select clear');
-        filterers4.change();
         return false;
     });
     colorSelect.change(ResetColors);
@@ -176,33 +116,14 @@ function render_filters_colors_and_groups(data) {
     var first = data[0];
 
     var lookups = [];
-    var lookups1 = [];
-    var lookups2 = [];
-    var lookups3 = [];
-    var lookups4 = [];
     for (var key in first) {
         var lookup = keyToLookup(key);
-        var lookup1 = keyToLookup(key);
-        var lookup2 = keyToLookup(key);
-        var lookup3 = keyToLookup(key);
-        var lookup4 = keyToLookup(key);
         // SELECCIONA LOS CAMPOS A FILTRAR
 
-        if (lookup.type == "Proveedor"){
+        if (lookup.type == "Proveedor" || lookup.type == "Vigencia del contrato" || lookup.type == "Procedimiento de contratación" || lookup.type == "Destino de contratación" || lookup.type == "Área requirente"){
             lookups.push(lookup);
         }
-        if (lookup1.type == "Procedimiento de contratación"){
-            lookups1.push(lookup1);
-        }
-        if (lookup2.type == "Destino de contratación"){
-            lookups2.push(lookup2);
-        }
-        if (lookup3.type == "Vigencia del contrato"){
-            lookups3.push(lookup3);
-        }
-        if (lookup4.type == "Área requirente"){
-            lookups4.push(lookup4);
-        }
+
     }
 
     var filterList = $('#filter-list');
@@ -211,60 +132,16 @@ function render_filters_colors_and_groups(data) {
         var values = get_distinct_values (data, lookup.type, lookup.key);
         var item = $('<div class="filter_block col-md-4"><li class="filter_title"><p style="color:#00cc99;"><strong>' + lookup.title + '</strong></p></li></div>');
         for (var j in values) {
-            var checkbox = $('<li class="sub-filter-block"><label style="cursor:pointer"><input style="cursor:pointer" data-target="' + lookup.key + '" type="checkbox" checked="checked" value="' + values[j] + '"/> ' + values[j] + '</label></li>');
-            checkbox.appendTo(item);
+            if (lookup.type.includes("rea")){
+	    var checkbox = $('<li class="sub-filter-block"><label style="cursor:pointer"><input style="cursor:pointer" class="cArea" data-target="' + lookup.key + '" type="checkbox" checked="checked" value="' + values[j] + '"/> ' + values[j] + '</label></li>');
+		}else{
+		var checkbox = $('<li class="sub-filter-block"><label style="cursor:pointer"><input style="cursor:pointer" class="c' + lookup.type + '" data-target="' + lookup.key + '" type="checkbox" checked="checked" value="' + values[j] + '"/> ' + values[j] + '</label></li>');
+        
+		}
+		checkbox.appendTo(item);
         }
         item.appendTo(filterList);
     }
-
-    var filterList1 = $('#filter-list1');
-    for (var i in lookups1) {
-        var lookup1 = lookups1[i];
-        var values = get_distinct_values (data, lookup1.type, lookup1.key);
-        var item = $('<div class="filter_block1 col-md-4"><li class="filter_title"><p style="color:#00cc99;"><strong>' + lookup1.title + '</strong></p></li></div>');
-        for (var j in values) {
-            var checkbox = $('<li class="sub-filter-block"><label style="cursor:pointer"><input style="cursor:pointer" data-target="' + lookup1.key + '" type="checkbox" checked="checked" value="' + values[j] + '"/> ' + values[j] + '</label></li>');
-            checkbox.appendTo(item);
-        }
-        item.appendTo(filterList1);
-    }
-
-    var filterList2 = $('#filter-list2');
-    for (var i in lookups2) {
-        var lookup2 = lookups2[i];
-        var values = get_distinct_values (data, lookup2.type, lookup2.key);
-        var item = $('<div class="filter_block2 col-md-4"><li class="filter_title"><p style="color:#00cc99;"><strong>' + lookup2.title + '</strong></p></li></div>');
-        for (var j in values) {
-            var checkbox = $('<li class="sub-filter-block"><label style="cursor:pointer"><input style="cursor:pointer" data-target="' + lookup2.key + '" type="checkbox" checked="checked" value="' + values[j] + '"/> ' + values[j] + '</label></li>');
-            checkbox.appendTo(item);
-        }
-        item.appendTo(filterList2);
-    }
-
-    var filterList3 = $('#filter-list3');
-    for (var i in lookups3) {
-        var lookup3 = lookups3[i];
-        var values = get_distinct_values (data, lookup3.type, lookup3.key);
-        var item = $('<div class="filter_block3 col-md-4"><li class="filter_title"><p style="color:#00cc99;"><strong>' + lookup3.title + '</strong></p></li></div>');
-        for (var j in values) {
-            var checkbox = $('<li class="sub-filter-block"><label style="cursor:pointer"><input style="cursor:pointer" data-target="' + lookup3.key + '" type="checkbox" checked="checked" value="' + values[j] + '"/> ' + values[j] + '</label></li>');
-            checkbox.appendTo(item);
-        }
-        item.appendTo(filterList3);
-    }
-
-    var filterList4 = $('#filter-list4');
-    for (var i in lookups4) {
-        var lookup4 = lookups4[i];
-        var values = get_distinct_values (data, lookup4.type, lookup4.key);
-        var item = $('<div class="filter_block4 col-md-4"><li class="filter_title"><p style="color:#00cc99;"><strong>' + lookup4.title + '</strong></p></li></div>');
-        for (var j in values) {
-            var checkbox = $('<li class="sub-filter-block"><label style="cursor:pointer"><input style="cursor:pointer" data-target="' + lookup4.key + '" type="checkbox" checked="checked" value="' + values[j] + '"/> ' + values[j] + '</label></li>');
-            checkbox.appendTo(item);
-        }
-        item.appendTo(filterList4);
-    }
-
     initialise_form(lookups);
 }
 

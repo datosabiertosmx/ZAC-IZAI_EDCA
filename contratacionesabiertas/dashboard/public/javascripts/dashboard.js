@@ -1,11 +1,10 @@
 $(document).ready(function () {
-
     // DONUT CHARTs
     var ff= $.jqplot;
 
     function donutChart1() {
         $.post('/contratacionesabiertas/donut-chart-data', {
-            year: $('#yearFilter').val(),
+            year: $('#metadataYear').val(),
         }, function (data) {
 
             var newData = [];
@@ -84,7 +83,7 @@ $(document).ready(function () {
 
     function donutChart2(  ) {
 		$.post('/contratacionesabiertas/donut-chart2-data', {
-            year: $('#yearFilter').val(),
+            year: $('#metadataYear').val(),
         }, function (data) {
 
             var newData = [];
@@ -163,7 +162,7 @@ $(document).ready(function () {
     // Carga la grafica de procedimientos por etapa
     function stageChart() {
         $.post('/contratacionesabiertas/stage-chart-data', {
-            year: $('#yearFilter').val(),
+            year: $('#metadataYear').val(),
         }, function (data) {
             var interval = 1;
             data.map(x => {
@@ -323,7 +322,7 @@ $(document).ready(function () {
                 process: $('#processFilter').val(), 
                 stage: $('#stageFilter').val(),
                 status: $('#statusFilter').val(),
-                year: $('#yearFilter').val(),
+                year: $('#metadataYear').val(),
                 orderby: $('#orderby').val()
             }, p);
         });
@@ -335,22 +334,22 @@ $(document).ready(function () {
         process: $('#processFilter').val(), 
         stage: $('#stageFilter').val(),
         status: $('#statusFilter').val(),
-        year: $('#yearFilter').val(),
+        year: $('#metadataYear').val(),
         orderby: $('#orderby').val() 
     }, p);
 
-    $('#keyword').keyup(function () {
+    $('#anotherkeyword').click(function () {
         $('#ctable').load('/contratacionesabiertas/pagination',{ 
             npage : 1, 
             keyword: $('#keyword').val(),  
             process: $('#processFilter').val(), 
             stage: $('#stageFilter').val(),
             status: $('#statusFilter').val(),
-            year: $('#yearFilter').val(),
+            year: $('#metadataYear').val(),
             orderby: $('#orderby').val() 
         }, p);
     });
-
+    
     $('#orderby').change(function () {
         $('#ctable').load('/contratacionesabiertas/pagination',{ 
             npage : 1, 
@@ -358,7 +357,7 @@ $(document).ready(function () {
             process: $('#processFilter').val(), 
             stage: $('#stageFilter').val(),
             status: $('#statusFilter').val(),
-            year: $('#yearFilter').val(),
+            year: $('#metadataYear').val(),
             orderby: $('#orderby').val() 
         }, p);
     });
@@ -371,7 +370,7 @@ $(document).ready(function () {
             process: $('#processFilter').val(), 
             stage: $('#stageFilter').val(),
             status: $('#statusFilter').val(),
-            year: $('#yearFilter').val(),
+            year: $('#metadataYear').val(),
             orderby: $('#orderby').val() 
         }, p);
     });
@@ -432,7 +431,7 @@ $(document).ready(function () {
             process: $('#processFilter').val(), 
             stage: $('#stageFilter').val(),
             status: $('#statusFilter').val(),
-            year: $('#yearFilter').val(),
+            year: $('#metadataYear').val(),
             orderby: $('#orderby').val() 
         }, p);
     });
@@ -445,7 +444,7 @@ $(document).ready(function () {
             process: $('#processFilter').val(), 
             stage: $('#stageFilter').val(),
             status: $('#statusFilter').val(),
-            year: $('#yearFilter').val(),
+            year: $('#metadataYear').val(),
             orderby: $('#orderby').val() 
         }, p);
     });
@@ -463,7 +462,7 @@ google.charts.setOnLoadCallback(drawSeriesChart);
 function drawSeriesChart() {
 
     $.post('/contratacionesabiertas/bubble-chart-data', {
-        year: $('#yearFilter').val(),
+        year: $('#metadataYear').val(),
     }, function (data) {
 
         var newData = [['ID', 'Fecha de firma', 'Vigencia (días naturales)', 'Tipo', 'Monto MXN']];

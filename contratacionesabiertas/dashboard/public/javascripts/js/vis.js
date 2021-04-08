@@ -243,34 +243,6 @@ BubbleChart = (function() {
                     flag = true; // Es igual por lo tanto no se guarda
                 }
             });
-            var filterers1 = $('.filter_block1 input').filter(function() {
-                return !this.checked;
-            }).each(function() {
-                if (value == this.value) {
-                    flag = true; // Es igual por lo tanto no se guarda
-                }
-            });
-            var filterers2 = $('.filter_block2 input').filter(function() {
-                return !this.checked;
-            }).each(function() {
-                if (value == this.value) {
-                    flag = true; // Es igual por lo tanto no se guarda
-                }
-            });
-            var filterers3 = $('.filter_block3 input').filter(function() {
-                return !this.checked;
-            }).each(function() {
-                if (value == this.value) {
-                    flag = true; // Es igual por lo tanto no se guarda
-                }
-            });
-            var filterers4 = $('.filter_block4 input').filter(function() {
-                return !this.checked;
-            }).each(function() {
-                if (value == this.value) {
-                    flag = true; // Es igual por lo tanto no se guarda
-                }
-            });
 
             if (!flag) {
                 allValues[value] = true;
@@ -466,7 +438,7 @@ $(function() {
     };
 
     d3.xhr("/contratacionesabiertas/d3-bubble-chart-data").header("Content-Type", "application/json").post(JSON.stringify({
-        year: $('#yearFilter').val(),
+        year: $('#metadataYear').val(),
     }), function(error, res) {
         var result = JSON.parse(res.response);
         var data2 = [];

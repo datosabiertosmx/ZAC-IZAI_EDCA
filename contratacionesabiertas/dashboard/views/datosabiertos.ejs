@@ -32,6 +32,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.8/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.2/FileSaver.min.js" integrity="sha512-k8F8QynmFNURwbUJC8drKA+fo3YfNvjqKzStdydD6au+MzvxBoRnxH8E31RJXwDY9DrnEiPhh9wBoDSIxhkyHQ==" crossorigin="anonymous"></script>
+    <script src="/contratacionesabiertas/static/javascripts/common.js"></script>
 	
 	<style no-shim>        
         .navbar-default{ 
@@ -133,7 +134,7 @@
                   <div class="row">
                     <div class="col-md-1">
                       <button type="button" class="btn btn-primary btn-sm btn-block" data-toggle="collapse" href="#parameters1" aria-expanded="false" aria-controls="parameters1">
-                        <a class="font-weight-bold">get</a>
+                        <a class="font-weight-bold">GET</a>
                       </button>
                     </div>
                     <div class="col-md-11 font-weight-bold" data-toggle="collapse" href="#parameters1" aria-expanded="false" aria-controls="parameters1" style="cursor: pointer;">
@@ -188,8 +189,8 @@
                                   <i style="font-size:10px; font-weight: normal;">(path)</i></th>
                                 <td>
                                   <p>Filtro que permite la consulta de los procesos según el método de contratación utilizado. El resultado de la consulta contendrá todos los procesos publicados en este sitio, incluyendo aquellos que fueron declarados desiertos o cancelados, así como aquellos que aún no han sido formalizados.</p>
-                                  <p>Valores disponibles: Adjudicación directa, Invitación a cuando menos tres personas y Licitación pública</p>
-                                  <select id="disabledSelect" name="procurementmethod" class="custom-select" size="3" style="width: 350px;" multiple required disabled>
+                                  <p>Valores disponibles: Adjudicación directa, Invitación a cuando menos tres personas, Licitación pública</p>
+                                  <select id="disabledSelect" name="procurementmethod" class="custom-select" size="4" style="width: 350px;" multiple required disabled>
                                     <option value="Adjudicación directa">Adjudicación directa</option>
                                     <option value="Invitación a cuando menos tres personas">Invitación a cuando menos tres personas</option>
                                     <option value="Licitación pública">Licitación pública</option>
@@ -204,15 +205,8 @@
                                   <i style="font-size:10px; font-weight: normal;">(path)</i></th>
                                 <td>
                                   <p>Filtro que permite la consulta de los procesos según la fecha de firma del contrato. Este filtro es opcional; al incluirlo en la búsqueda, el resultado contendrá solamente los procesos formalizados.</p>
-                                  <p>Valores disponibles: 2015, 2016, 2017, 2018, 2019, 2020</p>
-                                  <select id="yearProcurementMethod" name="year" class="custom-select" size="4" style="width: 350px;" multiple  disabled>
-                                    <option value="2015">2015</option>
-                                    <option value="2016">2016</option>
-                                    <option value="2017">2017</option>
-                                    <option value="2018">2018</option>
-                                    <option value="2019">2019</option>
-                                    <option value="2020">2020</option>
-                                  </select>
+                                  <p id="aniosText"></p>
+                                  <select id="yearProcurementMethod" name="year" class="custom-select" size="4" style="width: 350px;" multiple  disabled></select>
                                   <br><br>
                                 </td>
                               </tr>
@@ -234,10 +228,9 @@
                                 <td>
                                   <div class="container">
                                     <div class="row">
-                                      <button class="btn btn-primary btn-sm ml-auto font-weight-bold" style="visibility:visible; display:block;" onclick="copyResult('procurementmethodRes')">Copiar contenido</button>
-                                      <button id="downlo" class="btn btn-primary btn-sm ml-auto font-weight-bold" style="visibility:visible; display:block;" onclick="downloadJSON('procurementmethod')">Descargar JSON</button>
-                                      <!-- <button id="downlo_6" class="btn btn-primary btn-sm ml-auto font-weight-bold" style="visibility:visible; display:block;" onclick="downloadCSV('procurementmethod')">Descargar CSV</button> -->
-                                      <button id="downlo_7" class="btn btn-primary btn-sm ml-auto font-weight-bold" style="visibility:visible; display:block;" onclick="downloadXLS('procurementmethod')">Descargar EXCEL</button>
+                                      <button class="btn btn-primary btn-sm font-weight-bold" style="visibility:visible; display:block;" onclick="copyResult('procurementmethodRes')">Copiar contenido</button>
+                                      <button id="downlo" class="btn btn-primary btn-sm ml-3 font-weight-bold" style="visibility:visible; display:block;" onclick="downloadJSON('procurementmethod')">Descargar JSON</button>
+                                      <button id="downlo_7" class="btn btn-primary btn-sm ml-3 font-weight-bold" style="visibility:visible; display:block;" onclick="downloadXLS('procurementmethod')">Descargar EXCEL</button>
                                     </div>
                                   </div>
                                   <div id="downley" class="spinner-border" role="status" hidden>
@@ -345,15 +338,8 @@
                                   <i style="font-size:10px; font-weight: normal;">(path)</i></th>
                                 <td>
                                   <p>Filtro que permite la consulta de los procesos según la fecha de firma del contrato. Este filtro es opcional; al incluirlo en la búsqueda, el resultado contendrá solamente los procesos formalizados.</p>
-                                  <p>Valores disponibles: 2015, 2016, 2017, 2018, 2019, 2020</p>
-                                  <select id="yearAdditionalProcurementCategories" name="year" class="custom-select" size="4" style="width: 350px;" multiple  disabled>
-                                    <option value="2015">2015</option>
-                                    <option value="2016">2016</option>
-                                    <option value="2017">2017</option>
-                                    <option value="2018">2018</option>
-                                    <option value="2019">2019</option>
-                                    <option value="2020">2020</option>
-                                  </select>
+                                  <p id="aniosText2"></p>
+                                  <select id="yearAdditionalProcurementCategories" name="year" class="custom-select" size="4" style="width: 350px;" multiple  disabled></select>
                                   <br><br>
                                 </td>
                               </tr>
@@ -376,10 +362,9 @@
                                 <td>
                                   <div class="container">
                                     <div class="row">
-                                      <button class="btn btn-primary btn-sm ml-auto font-weight-bold" style="visibility:visible; display:block;" onclick="copyResult('additionalProcurementCategoriesRes')">Copiar contenido</button>
-                                      <button id="downlo_2" class="btn btn-primary btn-sm ml-auto font-weight-bold" style="visibility:visible; display:block;" onclick="downloadJSON('additionalprocurementcategories')">Descargar JSON</button>
-                                      <!-- <button id="downlo_5" class="btn btn-primary btn-sm ml-auto font-weight-bold" style="visibility:visible; display:block;" onclick="downloadCSV('additionalprocurementcategories')">Descargar CSV</button> -->
-                                      <button id="downlo_8" class="btn btn-primary btn-sm ml-auto font-weight-bold" style="visibility:visible; display:block;" onclick="downloadXLS('additionalprocurementcategories')">Descargar EXCEL</button>
+                                      <button class="btn btn-primary btn-sm font-weight-bold" style="visibility:visible; display:block;" onclick="copyResult('additionalProcurementCategoriesRes')">Copiar contenido</button>
+                                      <button id="downlo_2" class="btn btn-primary btn-sm ml-3 font-weight-bold" style="visibility:visible; display:block;" onclick="downloadJSON('additionalprocurementcategories')">Descargar JSON</button>
+                                      <button id="downlo_8" class="btn btn-primary btn-sm ml-3 font-weight-bold" style="visibility:visible; display:block;" onclick="downloadXLS('additionalprocurementcategories')">Descargar EXCEL</button>
                                     </div>
                                   </div>
                                   <div id="downley_2" class="spinner-border" role="status" hidden>
@@ -465,15 +450,8 @@
                                   <i style="font-size:10px; font-weight: normal;">(path)</i></th>
                                 <td>
                                   <p>Filtro que permite la consulta la información según el año de la fecha de firma del contrato. Este filtro es opcional, al incluirlo en la consulta el resultado mostrará solo los procesos que han sido formalizados. En caso de no seleccionar un año,  el resultado de la consulta contendrá todos los procesos publicados en este sitio, incluyendo aquellos que fueron declarados desiertos o cancelados, así como aquellos que aún no han sido formalizados.</p>
-                                  <p>Valores disponibles: 2015, 2016, 2017, 2018, 2019, 2020</p>
-                                  <select id="yearContractingProcess​" name="year" class="custom-select" size="4" style="width: 350px;" multiple disabled>
-                                    <option value="2015">2015</option>
-                                    <option value="2016">2016</option>
-                                    <option value="2017">2017</option>
-                                    <option value="2018">2018</option>
-                                    <option value="2019">2019</option>
-                                    <option value="2020">2020</option>
-                                  </select>
+                                  <p id="aniosText3"></p>
+                                  <select id="yearContractingProcess​" name="year" class="custom-select" size="4" style="width: 350px;" multiple disabled></select>
                                   <br><br>
                                 </td>
                               </tr>
@@ -495,11 +473,9 @@
                                 <td>
                                   <div class="container">
                                     <div class="row">
-                                      <button class="btn btn-primary btn-sm ml-auto font-weight-bold" style="visibility:visible; display:block;" onclick="copyResult('contractingprocessRes')">Copiar contenido</button>
-                                      <button id="downlo_3" class="btn btn-primary btn-sm ml-auto font-weight-bold" style="visibility:visible; display:block;" onclick="downloadJSON('contractingprocess')">Descargar JSON</button>
-                                      <!-- <button id="downlo_4" class="btn btn-primary btn-sm ml-auto font-weight-bold" style="visibility:visible; display:block;" onclick="downloadCSV('contractingprocess')">Descargar CSV</button> -->
-                                      <button id="downlo_9" class="btn btn-primary btn-sm ml-auto font-weight-bold" style="visibility:visible; display:block;" onclick="downloadXLS('contractingprocess')">Descargar EXCEL</button>
-                                    </div>
+                                      <button class="btn btn-primary btn-sm font-weight-bold" style="visibility:visible; display:block;" onclick="copyResult('contractingprocessRes')">Copiar contenido</button>
+                                      <button id="downlo_3" class="btn btn-primary btn-sm ml-3 font-weight-bold" style="visibility:visible; display:block;" onclick="downloadJSON('contractingprocess')">Descargar JSON</button>
+                                      <button id="downlo_9" class="btn btn-primary btn-sm ml-3 font-weight-bold" style="visibility:visible; display:block;" onclick="downloadXLS('contractingprocess')">Descargar EXCEL</button>
                                   </div>
                                   <div id="downley_3" class="spinner-border" role="status" hidden>
                                     <span class="sr-only">Loading...</span>
@@ -728,9 +704,48 @@
     <script type="text/javascript" src="/contratacionesabiertas/static/bower_components/bootstrap_4/dist/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="<%= process.env.CDN_URL %>/bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    
     <script type="text/javascript">
-    var uri = 'http://localhost';
-    var port = 3000;
+    $(document).ready(function() {
+      var uri = globals.site.url;
+      var port = globals.site.port;
+      var endPointFiscalYear = '/edca/fiscalYears';
+      $.ajax({
+          url: `${uri}:${port}${endPointFiscalYear}`,
+          type: 'GET',
+          success: function(data){ 
+            var arrayYears = new Array();
+            var anios = "";
+            var count = 1;
+            data.fiscalYears.forEach(element => {
+              arrayYears.push(element.year);
+              if(count == data.fiscalYears.length){
+                anios +=  element.year +".";
+              }else{
+                anios +=  element.year +", ";
+              }
+                $('#yearProcurementMethod').append('<option value="'+element.year+'">'+element.year+'</option>');
+                $('#yearAdditionalProcurementCategories').append('<option value="'+element.year+'">'+element.year+'</option>');
+                $('#yearContractingProcess​').append('<option value="'+element.year+'">'+element.year+'</option>');
+              count++;
+            });
+            if(arrayYears.length > 0){
+              $('#aniosText').append(`Registros disponibles de los periodos: ${anios}`);
+              $('#aniosText2').append(`Registros disponibles de los periodos: ${anios}`);
+              $('#aniosText3').append(`Registros disponibles de los periodos: ${anios}`);
+            }
+          },
+          error: function(data) {
+              $('#yearProcurementMethod').append('<option value=""> Not Found </option>');
+              $('#yearAdditionalProcurementCategories').append('<option value=""> Not Found </option>');
+              $('#yearContractingProcess​').append('<option value=""> Not Found </option>');
+          }
+      });
+    });
+    </script>
+    <script type="text/javascript">
+    var uri = globals.site.url;
+    var port = globals.site.port;
     var endPointProcurementMethod = '/edca/contractingprocess/procurementmethod/';
     var endPointAdditionalProcurementCategories = '/edca/contractingprocess/additionalprocurementcategories/';
     var endPointContractingProcess = '/edca/contractingprocess/';
@@ -1361,10 +1376,12 @@
                             partie.additionalContactPoints.forEach(additionalContactPoint => {
                               //availableLanguage
                               var arrayAvailableLanguage = new Array();
-                              if(additionalContactPoint.availableLanguage.length > 0){
-                                additionalContactPoint.availableLanguage.forEach(availableLanguage => {
-                                  arrayAvailableLanguage.push(availableLanguage)
-                                });
+                              if(additionalContactPoint.availableLanguage !== undefined){
+                                if(additionalContactPoint.availableLanguage.length > 0){
+                                  additionalContactPoint.availableLanguage.forEach(availableLanguage => {
+                                    arrayAvailableLanguage.push(availableLanguage)
+                                  });
+                                }
                               }
                               var objAdditionalContactPoint = new Object({
                                 ocid : release.ocid,
