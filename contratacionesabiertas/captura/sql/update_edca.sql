@@ -24,11 +24,11 @@
 */
 
 -- Actualizacion de documentos utilizados para el envío a PNT
-update DocumentType set title_esp = 'Convocatoria o invitación' where code = 'tenderNotice';
-update documenttype set title_esp = 'Estudios de impacto urbano y ambiental' where code = 'environmentalImpact';
+update public.documenttype set title_esp = 'Convocatoria o invitación' where code = 'tenderNotice';
+update public.documenttype set title_esp = 'Estudios de impacto urbano y ambiental' where code = 'environmentalImpact';
 update public.documenttype set stage = '0' where code = 'contractText';
 
-INSERT INTO DocumentType(id, stage, code, category, title, title_esp, description, source) VALUES
+INSERT INTO public.documenttype(id, stage, code, category, title, title_esp, description, source) VALUES
 (47, 2,'openingOfProposals','basic','Opening Of Proposals','Documento en donde consta la presentación de las propuestas','Documento en donde consta la presentación de las propuestas',''),
 (48, 5,'settlement','basic','Settlement','Finiquito','Documento elaborado una vez concluídos los trabajos derivados de un contrato celebrado con una dependencia o entidad del Estado. En este se hará constar los créditos a favor y en contra que resulten para cada una de las partes involucradas, tales son la dependecia y el contratista.',''),
 (49, 4,'contractAmendment','basic','Contract Amendment','Convenio modificatorio','Documento en el que se detallan las modificaciones realizadas a las condiciones originales del contrato.',''),
@@ -59,8 +59,8 @@ CREATE SEQUENCE public.datapnt_id_seq
     NO MAXVALUE
     CACHE 1;
 
-alter table public.datapnt owner to prueba_captura;
-alter table public.datapnt_id_seq owner to prueba_captura;
+alter table public.datapnt owner to captura;
+alter table public.datapnt_id_seq owner to captura;
 
 ALTER SEQUENCE public.datapnt_id_seq OWNED BY public.datapnt.id;
 
