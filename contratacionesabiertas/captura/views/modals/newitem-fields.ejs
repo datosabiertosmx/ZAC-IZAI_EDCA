@@ -71,8 +71,8 @@
     <p><label data-tooltip="crear_proceso" title='La clasificación debe ser obtenida de un esquema o una lista de códigos existente. Este campo se utiliza para indicar el esquema / lista de códigos de los que se extrae la clasificación. Para las clasificaciones de partidas individuales, el valor debe corresponder con la lista de códigos "Esquema de clasificación de items" siempre que sea posible.'>
     Esquema <!--Classification scheme--></label>
     	<select name="classification_scheme" id="classification_scheme" class="form-control">
-            <option value="COG">Clasificador por Objeto del Gasto (COG)</option>
-	        <option value="CUCOP">Clasificador Único de las Contrataciones Públicas (CUCOP)</option>        
+	        <option value="CUCOP">Clasificador Único de las Contrataciones Públicas (CUCOP)</option>
+			<option value="COG">Clasificador por Objeto del Gasto (COG)</option>	        
         	<option value="CPC">Central Product Classification</option>
 	        <option value="CPV">EC Common Procurement Vocabulary</option>
     	    <option value="CPVS">EC Common Procurement Vocabulary - Listas de Códigos Suplementarias</option>
@@ -173,18 +173,18 @@
 	function validarIdentificador(input){
         input.value = input.value.trim();
         if(document.getElementById('classification_scheme').selectedIndex == 0){
-            if(input.value.length == 5){
+            if(input.value.length == 8){
                 //No modifica el dato
             }else{
-                alert("La longitud del identificador no coincide con el esquema seleccionado. Considerar que el esquema COG consta de 5 caracteres.")
+                alert("La longitud del identificador no coincide con el esquema seleccionado. Considerar que el esquema CUCOP consta de 8 caracteres.")
                 input.value = "";
                 document.getElementById('classification_description').value = "";
             }
         }else if(document.getElementById('classification_scheme').selectedIndex == 1){
-            if(input.value.length == 8){
+            if(input.value.length == 5){
                 //No modifica el dato
             }else{
-                alert("La longitud del identificador no coincide con el esquema seleccionado. Considerar que el esquema CUCOP consta de 8 carateres.")
+                alert("La longitud del identificador no coincide con el esquema seleccionado. Considerar que el esquema COG consta de 5 carateres.")
                 input.value = "";
                 document.getElementById('classification_description').value = "";
             }

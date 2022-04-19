@@ -67,8 +67,8 @@
             Esquema
             <!--Classification scheme--></label>
         <select name="classification_scheme" id="classification_scheme" class="form-control">
-            <option value="COG" <%= item.classification_scheme == 'COG' ? 'selected' : '' %>>Clasificador por Objeto del Gasto (COG)</option>
             <option value="CUCOP" <%= item.classification_scheme == 'CUCOP' ? 'selected' : '' %>>Clasificador Único de las Contrataciones Públicas (CUCOP)</option>
+            <option value="COG" <%= item.classification_scheme == 'COG' ? 'selected' : '' %>>Clasificador por Objeto del Gasto (COG)</option>
             <option value="CPC" <%= item.classification_scheme == 'CPC' ? 'selected' : '' %>>Central Product Classification</option>
             <option value="CPV" <%= item.classification_scheme == 'CPV' ? 'selected' : '' %>>EC Common Procurement Vocabulary</option>
             <option value="CPVS" <%= item.classification_scheme == 'CPVS' ? 'selected' : '' %>>EC Common Procurement Vocabulary - Listas de Códigos Suplementarias</option>
@@ -179,17 +179,17 @@
 	function validarIdentificador(input){
         input.value = input.value.trim();
         if(document.getElementById('classification_scheme').selectedIndex == 0){
-            if(input.value.length == 5){
-                //No modifica el dato
-            }else{
-                alert("La longitud del identificador no coincide con el esquema seleccionado. Considerar que el esquema COG consta de 5 caracteres.")
-                input.value = "";
-            }
-        }else if(document.getElementById('classification_scheme').selectedIndex == 1){
             if(input.value.length == 8){
                 //No modifica el dato
             }else{
-                alert("La longitud del identificador no coincide con el esquema seleccionado. Considerar que el esquema CUCOP consta de 8 carateres.")
+                alert("La longitud del identificador no coincide con el esquema seleccionado. Considerar que el esquema CUCOP consta de 8 caracteres.")
+                input.value = "";
+            }
+        }else if(document.getElementById('classification_scheme').selectedIndex == 1){
+            if(input.value.length == 5){
+                //No modifica el dato
+            }else{
+                alert("La longitud del identificador no coincide con el esquema seleccionado. Considerar que el esquema COG consta de 5 carateres.")
                 input.value = "";
             }
         }

@@ -24,10 +24,11 @@
 */
 
 -- Actualizacion de documentos utilizados para el envío a PNT
-update public.documenttype set title_esp = 'Convocatoria o invitación' where code = 'tenderNotice';
-update public.documenttype set title_esp = 'Estudios de impacto urbano y ambiental' where code = 'environmentalImpact';
+update DocumentType set title_esp = 'Convocatoria o invitación' where code = 'tenderNotice';
+update documenttype set title_esp = 'Estudios de impacto urbano y ambiental' where code = 'environmentalImpact';
+update public.documenttype set stage = '0' where code = 'contractText';
 
-INSERT INTO public.documenttype(id, stage, code, category, title, title_esp, description, source) VALUES
+INSERT INTO DocumentType(id, stage, code, category, title, title_esp, description, source) VALUES
 (47, 2,'openingOfProposals','basic','Opening Of Proposals','Documento en donde consta la presentación de las propuestas','Documento en donde consta la presentación de las propuestas',''),
 (48, 5,'settlement','basic','Settlement','Finiquito','Documento elaborado una vez concluídos los trabajos derivados de un contrato celebrado con una dependencia o entidad del Estado. En este se hará constar los créditos a favor y en contra que resulten para cada una de las partes involucradas, tales son la dependecia y el contratista.',''),
 (49, 4,'contractAmendment','basic','Contract Amendment','Convenio modificatorio','Documento en el que se detallan las modificaciones realizadas a las condiciones originales del contrato.',''),
@@ -58,8 +59,8 @@ CREATE SEQUENCE public.datapnt_id_seq
     NO MAXVALUE
     CACHE 1;
 
-alter table public.datapnt owner to captura;
-alter table public.datapnt_id_seq owner to captura;
+alter table public.datapnt owner to prueba_captura;
+alter table public.datapnt_id_seq owner to prueba_captura;
 
 ALTER SEQUENCE public.datapnt_id_seq OWNED BY public.datapnt.id;
 
@@ -91,37 +92,30 @@ alter table public.budgetbreakdown add column fund_type varchar;
 alter table dashboard.budgetbreakdown add column fund_type varchar;
 alter table dashboard.budgetbreakdown add column origin varchar;
 
-ALTER TABLE public.roles RENAME COLUMN clarificationmeetingattendee TO attendee;
-ALTER TABLE public.roles RENAME COLUMN clarificationmeetingofficial TO official;
-alter table public.roles add column responsibleunit boolean;
-alter table public.roles add column requestingunit boolean;
-alter table public.roles add column contractingunit boolean;
-alter table public.roles add column technicalunit boolean;
-
-ALTER TABLE dashboard.roles RENAME COLUMN clarificationmeetingattendee TO attendee;
-ALTER TABLE dashboard.roles RENAME COLUMN clarificationmeetingofficial TO official;
-alter table dashboard.roles add column responsibleunit boolean;
-alter table dashboard.roles add column requestingunit boolean;
-alter table dashboard.roles add column contractingunit boolean;
-alter table dashboard.roles add column technicalunit boolean;
-
-alter table public.budgetclassifications rename column trimestre to trimester;
-alter table dashboard.budgetclassifications rename column trimestre to trimester;
+ALTER TABLE roles RENAME COLUMN clarificationmeetingattendee TO attendee;
+ALTER TABLE roles RENAME COLUMN clarificationmeetingofficial TO official;
+alter table roles add column responsibleunit boolean;
+alter table roles add column requestingunit boolean;
+alter table roles add column contractingunit boolean;
+alter table roles add column technicalunit boolean;
 
 update implementationtransactions set payment_method = 'wireTransfe' where payment_method = 'wireTransfer';
 
-alter table public.guarantees rename column guaranteetype to type;
-alter table public.guarantees rename column guaranteedobligations to obligations;
+alter table guarantees rename column guaranteetype to type;
+alter table guarantees rename column guaranteedobligations to obligations;
 
-alter table dashboard.guarantees rename column guaranteetype to type;
-alter table dashboard.guarantees rename column guaranteedobligations to obligations;
-
-update public.guarantees set type = 'letterOfCredit' where type = 'creditLetter';
-update dashboard.guarantees set type = 'letterOfCredit' where type = 'creditLetter';
+update guarantees set type = 'letterOfCredit' where type = 'creditLetter';
 
 update relatedprocedure set relationship_type = 'planning' where relationship_type = 'planningProcess';
 update relatedprocedure set relationship_type = 'parent' where relationship_type = 'mainContract';
 update relatedprocedure set relationship_type = 'prior' where relationship_type = 'previousProcess';
+
+update tender set procurementmethod_rationale_id = 'Artículo 26 fracción I RAAS' where procurementmethod_rationale_id = 'Artículo 26 I RAAS';
+update tender set procurementmethod_rationale_id = 'Artículo 41 fracción VII RAAS AD' where procurementmethod_rationale_id = 'Artículo 41 VII RAAS AD';
+update tender set procurementmethod_rationale_id = 'Artículo 41 fracción VIII RAAS AD' where procurementmethod_rationale_id = 'Artículo 41 VIII RAAS AD';
+update tender set procurementmethod_rationale_id = 'Artículo 41 fracción X RAAS AD' where procurementmethod_rationale_id = 'Artículo 41 X RAAS AD';
+update tender set procurementmethod_rationale_id = 'Artículo 41 fracción XI RAAS AD' where procurementmethod_rationale_id = 'Artículo 41 XI RAAS AD';
+update tender set procurementmethod_rationale_id = 'Artículo 41 fracción XII RAAS AD' where procurementmethod_rationale_id = 'Artículo 41 XII RAAS AD';
 
 -- Ejecutar para actualizar roles con datos en el esquema dashboard
 truncate table roles restart identity;

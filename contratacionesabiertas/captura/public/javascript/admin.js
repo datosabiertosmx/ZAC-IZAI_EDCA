@@ -166,6 +166,7 @@ $("#adminModal").on('show.bs.modal', function (event) {
             modal.find('.modal-title').text('Validación de Procesos');
             modal.find('#modal_content').html("");
             modal.find('#modal_content').load('/validate-process/');
-            break;
+        break;
+        
     }
 });

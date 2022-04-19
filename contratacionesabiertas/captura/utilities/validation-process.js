@@ -64,6 +64,7 @@ function ValidateProcess(cpid, db) {
 	        
         // validacion de licitacion
         let captureTender = capture['Licitación'] = {};
+
         addWarning(captureTender, 'Identificador de la licitación', !json.tender || !isNotNullOrEmpty(json.tender.id), 'Obligatorio');
         addWarning(captureTender, 'Denominación de la licitación', !json.tender || !isNotNullOrEmpty(json.tender.title), 'Obligatoria');
         addWarning(captureTender, 'Objeto de la licitación', !json.tender || !isNotNullOrEmpty(json.tender.id), 'Obligatorio');
