@@ -26,7 +26,7 @@ app.use('/contratacionesabiertas', routes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-    res.redirect('https://contratacionesabiertas.izai.org.mx/contratacionesabiertas'); 
+    res.redirect('https://contratacionesabiertas.izai.org.mx/contratacionesabiertas/contratos'); 
     // var err = new Error('Not Found');
     // err.status = 404;
     // next(err);
