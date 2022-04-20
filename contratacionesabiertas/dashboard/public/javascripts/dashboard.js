@@ -473,7 +473,7 @@ function drawSeriesChart() {
         min = Math.min.apply(Math, data.map(function(o) { return Math.abs(o.vigencia.days); }));
         max = Math.max.apply(Math, data.map(function(o) { return Math.abs(o.vigencia.days); }));
 
-        min = 0;
+        min = -1; //Área de las burbujas que no tienen vigencia de 1 día
         max = max + 1000; //Tamaño del a grafica Contrataciones en el tiempo
         minDate = new Date(minDate.getFullYear() - 1, minDate.getMonth(), minDate.getDate());
         maxDate = new Date(maxDate.getFullYear() + 1, maxDate.getMonth(), maxDate.getDate());
